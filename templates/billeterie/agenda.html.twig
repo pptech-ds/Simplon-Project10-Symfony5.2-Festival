@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BilleterieController!{% endblock %}
+
+{% block body %}
+
+
+
+
+<table class="table table-hover mb-5 mt-4">
+  <thead>
+    <tr hidden>
+      <th scope="col">Date</th>
+      <th scope="col">Time</th>
+      <th scope="col">Artist</th>
+      <th scope="col">Reservation</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in table_loop %}
+        <tr class="table-active" style="border: 1px solid blue">
+        <th scope="row">{{ item.Date }}</th>
+        <td>{{ item.Time }}</td>
+        <td>{{ item.Artist }}</td>
+        <td>{{ item.Reservation }}</td>
+    </tr>
+    {% endfor %}
+    
+
+  </tbody>
+</table>
+
+
+
+
+{% endblock %}
