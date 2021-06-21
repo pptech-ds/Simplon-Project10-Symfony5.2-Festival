@@ -13,13 +13,13 @@
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Agenda</a>
+            <a class="nav-link" href={{ path('billeterie_agenda') }}>Agenda</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Artistes</a>
+            <a class="nav-link" href={{ path('artist_home') }}>Artistes</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Billterie</a>
+            <a class="nav-link" href="#">Billeterie</a>
             </li>
             <li class="nav-item">
             {% if not is_granted("ROLE_USER") %}
