@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class ArtistController extends AbstractController
+{
+    /**
+     * @Route("/artist", name="artist_home")
+     */
+    public function home(): Response
+    {
+        return $this->render('artist/home.html.twig', [
+            'controller_name' => 'ArtistController ARTIST ALL',
+        ]);
+    }
+
+    /**
+     * @Route("/artist/{id}", name="artist_id", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function artist(): Response
+    {
+        return $this->render('artist/artist.html.twig', [
+            'controller_name' => 'ArtistController ARTIST ONE',
+        ]);
+    }
+}
