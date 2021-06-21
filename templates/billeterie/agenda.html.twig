@@ -18,11 +18,11 @@
   </thead>
   <tbody>
     {% for item in table_loop %}
-        <tr class="table-active" style="border: 1px solid blue">
-        <th scope="row">{{ item.Date }}</th>
-        <td>{{ item.Time }}</td>
-        <td>{{ item.Artist }}</td>
-        <td><a href="#" type="button" class="btn btn-primary">{{ item.Reservation }}</a></td>
+        <tr class="table-active text-center" style="border: 1px solid blue">
+        <td class="text-center">{{ item.Date }}</td>
+        <td class="text-center">{{ item.Time }}</td>
+        <td class="text-center">{{ item.Artist }}</td>
+        <td class="text-center"><a href="#" type="button" class="btn btn-primary">{{ item.Reservation }}</a></td>
     </tr>
     {% endfor %}
     

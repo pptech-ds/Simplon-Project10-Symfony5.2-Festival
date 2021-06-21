@@ -35,7 +35,7 @@ class BilleterieController extends AbstractController
 
 
     /**
-     * @Route("/billeterie", name="billeterie_agenda")
+     * @Route("/billeterie", name="billeterie_billeterie")
      */
     public function billeterie(): Response
     {
