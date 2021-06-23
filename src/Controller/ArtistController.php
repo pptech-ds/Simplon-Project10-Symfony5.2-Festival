@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Artist;
+use App\Entity\Category;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +17,13 @@ class ArtistController extends AbstractController
     public function home(): Response
     {
         $artists = $this->getDoctrine()->getRepository(Artist::class)->findAll();
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
 
         // dd($artists);
 
         return $this->render('artist/home.html.twig', [
             'artists' => $artists,
+            'categories' => $categories,
         ]);
     }
 
@@ -42,12 +45,14 @@ class ArtistController extends AbstractController
      */
     public function viewByCategory($id): Response
     {
-        $artist = $this->getDoctrine()->getRepository(Artist::class)->findByCategory($id);
+        $artists = $this->getDoctrine()->getRepository(Artist::class)->findByCategory($id);
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
 
-        dd($artist);
+        // dd($artist);
 
-        return $this->render('artist/view.html.twig', [
-            'artist' => $artist,
+        return $this->render('artist/home.html.twig', [
+            'artists' => $artists,
+            'categories' => $categories,
         ]);
     }
 }
