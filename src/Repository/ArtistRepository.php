@@ -22,6 +22,22 @@ class ArtistRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Recherche les artistes en fonction de la catégorie
+     * @return Artist[] Returns an array of Artist objects
+     */    
+    public function findByCategory(int $category = null)
+    {
+        $query = $this->createQueryBuilder('a'); // SELECT * FROM artist
+            // ->select('a.id', 'a.name' , 'a.isLive', 'a.description', 'a.concert'); 
+            if($category != null) {
+                $query->innerJoin('a.category', 'c');
+                $query->andWhere('c.id = :id')->setParameter('id', $category);
+            } 
+        return $query->getQuery()->getResult();
+    }
+
+
     // public function findByCategory(int $categoryId): array
     // {
     //     $entityManager = $this->getEntityManager();
@@ -42,36 +58,38 @@ class ArtistRepository extends ServiceEntityRepository
     
     
 
-    /**
-     * @return Artist[] Returns an array of Artist objects
-     */
+    // /**
+    //  * @return Artist[] Returns an array of Artist objects
+    //  */
     
-    public function findByCategory($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->select('a.name' , 'a.isLive', 'a.description')
-            ->innerJoin('c.id', 'a', 'WITH', 'a.category = c.id')
-            ->andWhere('c.id = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
+    // public function findByCategory($value)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->select('a.name' , 'a.isLive', 'a.description')
+    //         ->innerJoin('c.id', 'a', 'WITH', 'a.category = c.id')
+    //         ->andWhere('c.id = :val')
+    //         ->setParameter('val', $value)
+    //         ->getQuery()
+    //         ->getResult()
 
-            // innerJoin('c.phones', 'p', Join::ON, 'c.id = p.customerId')
-
-
-            // ->andWhere('a.exampleField = :val')
-            // ->setParameter('val', $value)
-            // ->orderBy('a.id', 'ASC')
-            // ->setMaxResults(10)
-            // ->getQuery()
-            // ->getResult()
-        ;
+    //         // innerJoin('c.phones', 'p', Join::ON, 'c.id = p.customerId')
 
 
-        // $qb->select('c')
-        // ->innerJoin('c.phones', 'p', 'WITH', 'p.phone = :phone')
-        // ->where('c.username = :username');
-    }
+    //         // ->andWhere('a.exampleField = :val')
+    //         // ->setParameter('val', $value)
+    //         // ->orderBy('a.id', 'ASC')
+    //         // ->setMaxResults(10)
+    //         // ->getQuery()
+    //         // ->getResult()
+    //     ;
+
+
+    //     // $qb->select('c')
+    //     // ->innerJoin('c.phones', 'p', 'WITH', 'p.phone = :phone')
+    //     // ->where('c.username = :username');
+
+        
+    // }
     
 
 
