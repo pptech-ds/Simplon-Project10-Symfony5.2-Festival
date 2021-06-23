@@ -19,10 +19,10 @@
             <a class="nav-link" href={{ path('artist_home') }}>Artistes</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Billeterie</a>
+            <a class="nav-link" href={{ path('billeterie_form') }}>Billeterie</a>
             </li>
             <li class="nav-item">
-            {% if not is_granted("ROLE_USER") %}
+            {% if not app.user %}
                 <li class="nav-item">
                 <a class="nav-link" href={{ path('app_register') }}>Enregistrement</a>
                 </li>

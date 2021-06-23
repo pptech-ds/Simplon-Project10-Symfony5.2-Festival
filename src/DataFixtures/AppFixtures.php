@@ -22,14 +22,9 @@ class AppFixtures extends Fixture
                 $artist->setIsLive(0);
                 $artist->setCategory($category);
                 $manager->persist($artist);
-    
-                // $manager->flush();
-            }
-            
-            $manager->flush();
+            } 
         }
 
-
-        
+        $manager->flush();
     }
 }

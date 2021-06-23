@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\BilleterieType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BilleterieController extends AbstractController
 {
@@ -36,27 +37,15 @@ class BilleterieController extends AbstractController
 
 
     /**
-     * @Route("/billeterie", name="billeterie_billeterie")
+     * @Route("/billeterie", name="billeterie_form")
      */
-    public function billeterie(): Response
+    public function billterie(): Response
     {
-        $table = [];
+        $form = $this->createForm(BilleterieType::class);
 
-        for ($i=0; $i<9; $i++)
-        {
-            $row = [
-                'Date' => '2021/06/21'.$i,
-                'Time' => '16:00:00'.$i,
-                'Artist' => 'Toto'.$i,
-                'Reservation' => 'Reserver une place'.$i
-            ]; 
-            $table[] = $row;
-        }
-
-        // dd($table);
-
-        return $this->render('billeterie/agenda.html.twig', [
-            'table_loop' => $table,
+        return $this->render('billeterie/form.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
+
 }
