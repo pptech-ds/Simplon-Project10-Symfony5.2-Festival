@@ -15,8 +15,9 @@ class BilleterieController extends AbstractController
     {
         $table = [];
 
-        for ($i=0; $i<5; $i++)
+        for ($i=0; $i<9; $i++)
         {
+            // if($i %3 = 0){
             $row = [
                 'Date' => '2021/06/2'.$i,
                 'Time' => '16:00:0'.$i,
@@ -41,7 +42,7 @@ class BilleterieController extends AbstractController
     {
         $table = [];
 
-        for ($i=0; $i<5; $i++)
+        for ($i=0; $i<9; $i++)
         {
             $row = [
                 'Date' => '2021/06/21'.$i,
