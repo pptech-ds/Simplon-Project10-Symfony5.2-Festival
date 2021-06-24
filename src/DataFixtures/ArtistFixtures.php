@@ -2,31 +2,37 @@
 
 namespace App\DataFixtures;
 
+use Faker;
 use App\Entity\Artist;
-// use App\Entity\Category;
-use App\DataFixtures\CatergoryFixtures;
+use App\DataFixtures\CategoryFixtures;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ArtistFixtures extends Fixture
+class ArtistFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // for($i=0;$i<5; $i++){
-        //     $catName = 'Cat'.$i;
-        //     $category = $this->getReference($catName);
-        //     // $category->setName('Cat'.$i);
-        //     // $manager->persist($category);
+        $faker = Faker\Factory::create('fr_FR');
 
-        //     for($j=0;$j<20; $j++){
-        //         $artist = new Artist();
-        //         $artist->setName('Artist'.$j);
-        //         $artist->setIsLive(0);
-        //         $artist->setCategory($category);
-        //         $manager->persist($artist);
-        //     } 
-        // }
+        for($nbArtists = 1; $nbArtists <= 30; $nbArtists++ ) {
+            $category = $this->getReference('category_' . $faker->numberBetween(1, 5));
+            $artist = new Artist;
+            $artist->setCategory($category);
+            // $artist->setConcert($faker->numberBetween(1, 9));
+            $artist->setName($faker->lastName);
+            $artist->setDescription($faker->realText(5000));
+            $artist->setIsLive($faker->numberBetween(0, 1));
+            $manager->persist($artist);
+        }
+        $manager->flush();
+    }
 
-        // $manager->flush();
+    public function getDependencies()
+    {
+        // retourne la liste des dépendances du notre objet, qui doivent s'exécuter avant
+        return [
+            CategoryFixtures::class            
+        ];
     }
 }
