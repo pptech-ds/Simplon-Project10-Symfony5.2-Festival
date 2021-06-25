@@ -154,10 +154,28 @@ composer require symfonycasts/verify-email-bundle
 ![image](https://user-images.githubusercontent.com/61125395/123354827-b7add200-d564-11eb-9871-883c23434669.png)  
 
 Now the controller "RegistrationController", we need to update the redirection and customize message flash if necessary, here we are going just going to update the redirection after registration, to move user on "home" page, so we just need to change at the end of method "verifyUserEmail":  
-```twig
+```php
 return $this->redirectToRoute('home');
 ```
+We need also to change our model "src/templates/base.html.twig" to add message flash:  
+```twig
+{% for flashError in app.flashes('verify_email_error') %}
+<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+{% endfor %}
 
+{% for flashSuccess in app.flashes('success') %}
+<div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
+{% endfor %}
+```
+
+And we finally need to do a migration to update table "user" in our database to add a new colun "is_verified"  
+```console
+symfony console make:migration
+symfony console doctrine:migrations:migrate
+```
+![image](https://user-images.githubusercontent.com/61125395/123356033-2c820b80-d567-11eb-891d-50f2217df93e.png)  
+
+We also need to tool to emulate a SMTP server, we need to send email and check them, for that, we are going to use "MaiHog"  
 
 
 
