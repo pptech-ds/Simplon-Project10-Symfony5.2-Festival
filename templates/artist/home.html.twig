@@ -7,7 +7,7 @@
 <div class="text-center mb-5 mt-5">
     {% for category in categories %}
         {# <button type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</button> #}
-        <a href="{{ path('artist_view_by_category', {'id':category.id}) }}" type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</a>
+        <a href="{{ path('artist_view_by_category_test', {'id':category.id, 'nbPage':nbPages}) }}" type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</a>
     {% endfor %}
 </div>
 
@@ -16,23 +16,35 @@
 
 
 <div class="row mt-5">
-        {% for artist in artists %}
-            <div class="col-4">
+    {% for artist in artists %}
+        <div class="col-4">
+            
+            <div class="card border-{{artist.category.color}} mb-5" style="max-width: 23rem; min-height: 15rem">
+            
                 
-                <div class="card border-{{artist.category.color}} mb-5" style="max-width: 23rem; min-height: 15rem">
-                
-                    
-                    <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist.isLive) ? 'secondary' : 'primary' }}">{{ (artist.isLive) ? 'En concert' : 'Music de rue' }}</span></div>
-                    <div class="card-body">
-                        <h4 class="card-title"> {{ artist.name }}</h4>
-                        <p class="card-text">{{ artist.description | u.truncate(100, '...') }} </p>
-                        <p class="card-text"><a href={{ path('artist_view', {'id':artist.id}) }}>Decouvrir l'artiste</a></p>
-                    </div>
-                
+                <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist.isLive) ? 'secondary' : 'primary' }}">{{ (artist.isLive) ? 'En concert' : 'Music de rue' }}</span></div>
+                <div class="card-body">
+                    <h4 class="card-title"> {{ artist.name }}</h4>
+                    <p class="card-text">{{ artist.description | u.truncate(100, '...') }} </p>
+                    <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id}) }}">Decouvrir l'artiste</a></p>
                 </div>
-                
+            
             </div>
-        {% endfor %}
-    </div>
+            
+        </div>
+    {% endfor %}
+</div>
+
+<div>
+  <ul class="pagination">
+    {% for i in 1 .. nbPages %}
+        <li class="page-item {{ i == app.request.get('page') ? 'active' : '' }}">
+            <a class="page-link mx-1 my-2" href="{{ path('artist_home', {'page':i}) }}"> {{ i }}</a>
+        </li>
+    {% endfor %}
+
+    
+  </ul>
+</div>
 
 {% endblock %}

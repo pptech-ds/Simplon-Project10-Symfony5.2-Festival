@@ -15,12 +15,12 @@ class ArtistFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        for($nbArtists = 1; $nbArtists <= 30; $nbArtists++ ) {
+        for($nbArtists = 1; $nbArtists <= 200; $nbArtists++ ) {
             $category = $this->getReference('category_' . $faker->numberBetween(1, 5));
             $artist = new Artist;
             $artist->setCategory($category);
             // $artist->setConcert($faker->numberBetween(1, 9));
-            $artist->setName($faker->lastName);
+            $artist->setName('DJ '.$faker->lastName);
             $artist->setDescription($faker->realText(5000));
             $artist->setIsLive($faker->numberBetween(0, 1));
             $manager->persist($artist);
