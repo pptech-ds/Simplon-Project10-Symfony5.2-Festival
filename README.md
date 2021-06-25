@@ -103,16 +103,18 @@ git commit -m 'home page fixed'
 git push --set-upstream origin home
 ```
 
-# Project:Controllers
-1. Let's back to main branch and merge all changes done on branch home, and create a new branch controllers to setup all other necessary controllers:  
+# Project:Users
+1. If we look in details the given UML, We need first of all user management:  
+![image](https://user-images.githubusercontent.com/61125395/123350955-5f72d200-d55c-11eb-8319-ed03cca063d6.png)  
+
+Let's back to main branch and merge all changes done on branch "home", and create a new branch "user":  
 ```console
 git checkout main
 git merge home
-git checkout -b controllers
+git checkout -b user
 ```
-If we look in details the given UML:  
-![image](https://user-images.githubusercontent.com/61125395/123350955-5f72d200-d55c-11eb-8319-ed03cca063d6.png)   
-We need first of all user management, so let's start by Users:  
+   
+And create user:  
 ```php
 symfony console make:user
 ```
@@ -124,6 +126,37 @@ symfony console doctrine:migrations:migrate
 ```
 ![image](https://user-images.githubusercontent.com/61125395/123351592-be851680-d55d-11eb-972c-683f0bd8b3c1.png)  
 ![image](https://user-images.githubusercontent.com/61125395/123351632-d492d700-d55d-11eb-86f6-bbaca4e41d8f.png)  
+
+We need also authentication system to manage users: 
+```console
+symfony console make:auth
+```
+![image](https://user-images.githubusercontent.com/61125395/123353143-2d17a380-d561-11eb-93c6-8fd0b74b1890.png)  
+
+We can see 3 files were created and one updated:
+  - Into "src/Controller/SecurityController.php", we can see that routes to "login" and "logout" are defined, we don't need to change them, let's keep it as it is.
+  - Into "config/packages/security.yaml", we can see some updates concerning "login" and "logout", no need to change anything.
+  - Into "src/Security/UserAuthenticator.php", there is a part where you see a "TODO", here we need to change the route, to redirect to home after the login process  
+  - Into "templates/security/login.html.twig", for the moment we are going to keep it like that, we can optimize the front view later
+
+We need also registration process to add users:
+```console
+symfony console make:registration-form
+```
+![image](https://user-images.githubusercontent.com/61125395/123354592-49690f80-d564-11eb-8995-8ca2bda43fc7.png)  
+![image](https://user-images.githubusercontent.com/61125395/123354653-5b4ab280-d564-11eb-8821-47fb538c1abd.png)  
+We can see that entity "User" has been updated and some files were created, we can also notice that there are some guidlines for next steps.
+
+We need to install a specific bundle to check the email:  
+```console
+composer require symfonycasts/verify-email-bundle
+```
+![image](https://user-images.githubusercontent.com/61125395/123354827-b7add200-d564-11eb-9871-883c23434669.png)  
+
+Now the controller "RegistrationController", we need to update the redirection and customize message flash if necessary, here we are going just going to update the redirection after registration, to move user on "home" page, so we just need to change at the end of method "verifyUserEmail":  
+```twig
+return $this->redirectToRoute('home');
+```
 
 
 
