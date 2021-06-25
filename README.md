@@ -175,7 +175,43 @@ symfony console doctrine:migrations:migrate
 ```
 ![image](https://user-images.githubusercontent.com/61125395/123356033-2c820b80-d567-11eb-891d-50f2217df93e.png)  
 
-We also need to tool to emulate a SMTP server, we need to send email and check them, for that, we are going to use "MaiHog"  
+To check some user actions we will need an SMTP server and mail box, for developement there are some useful tools for that, for our needs we are going to use "MailHog", official git repo "https://github.com/mailhog/MailHog".  
+  - For Ubuntu users, you need to install it like that:  
+  ```console
+  sudo apt-get -y install golang-go
+  go get github.com/mailhog/MailHog
+  ```  
+  - To launch MailHog just do from your terminal  
+  ```console
+  ~/go/bin/MailHog
+  ```
+  - You need to see the follwing mailbox at adress "http://localhost:8025/":  
+  ![image](https://user-images.githubusercontent.com/61125395/122689561-d7bb5980-d223-11eb-9896-4defb946cfc0.png)  
+  
+Once everyhting will be done, we can check all functionnalities for user, for that, let's update our menu first in file "src/templates/shared/_nav.html.twig" 
+  - Registration:  
+  ![image](https://user-images.githubusercontent.com/61125395/123356551-348e7b00-d568-11eb-97b0-69718ec8b6fb.png)  
+  ![image](https://user-images.githubusercontent.com/61125395/123356624-5425a380-d568-11eb-9145-fcc1e2329aa5.png)  
+  ![image](https://user-images.githubusercontent.com/61125395/123356635-5b4cb180-d568-11eb-9cfa-a499d10d820a.png)  
+  ![image](https://user-images.githubusercontent.com/61125395/123356663-6c95be00-d568-11eb-8c75-6267a3baf8d1.png)  
+  
+  - Login:
+  ![image](https://user-images.githubusercontent.com/61125395/123356749-9222c780-d568-11eb-831e-109d5d6c6dd1.png)  
+  ![image](https://user-images.githubusercontent.com/61125395/123356765-9949d580-d568-11eb-8144-8608304a939c.png)  
+  ![image](https://user-images.githubusercontent.com/61125395/123356817-b088c300-d568-11eb-8b3f-02b91d5ed27b.png)  
+  
+  - Logout: user is correctly logged out. 
+
+So we have finished for user management!
+ 
+  
+
+
+
+
+
+
+
 
 
 
