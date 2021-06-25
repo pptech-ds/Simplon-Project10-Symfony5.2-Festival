@@ -98,8 +98,36 @@ Using requested template "https://bootswatch.com/vapor/" we will update the mode
 
 4. Commit into git  
 ```php
-
+git add .
+git commit -m 'home page fixed'
+git push --set-upstream origin home
 ```
+
+# Project:Controllers
+1. Let's back to main branch and merge all changes done on branch home, and create a new branch controllers to setup all other necessary controllers:  
+```console
+git checkout main
+git merge home
+git checkout -b controllers
+```
+If we look in details the given UML:  
+![image](https://user-images.githubusercontent.com/61125395/123350955-5f72d200-d55c-11eb-8319-ed03cca063d6.png)   
+We need first of all user management, so let's start by Users:  
+```php
+symfony console make:user
+```
+![image](https://user-images.githubusercontent.com/61125395/123351155-d4460c00-d55c-11eb-9991-3b6e28b2539d.png)  
+We can see that 2 files("src/Entity/User.php" and "src/Repository/UserRepository.php") were created and updated. After checking the created files, we need to create entity into our database, so let's do a migration to create migration file which will be used to create the entity into our database.
+```console
+symfony console make:migration
+symfony console doctrine:migrations:migrate
+```
+![image](https://user-images.githubusercontent.com/61125395/123351592-be851680-d55d-11eb-972c-683f0bd8b3c1.png)  
+![image](https://user-images.githubusercontent.com/61125395/123351632-d492d700-d55d-11eb-86f6-bbaca4e41d8f.png)  
+
+
+
+
 
 
 
