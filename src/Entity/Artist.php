@@ -37,6 +37,11 @@ class Artist
      */
     private $description;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $concert;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Artist
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getConcert(): ?int
+    {
+        return $this->concert;
+    }
+
+    public function setConcert(?int $concert): self
+    {
+        $this->concert = $concert;
 
         return $this;
     }
