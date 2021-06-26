@@ -74,9 +74,12 @@ class ArtistController extends AbstractController
     /**
      * @Route("/artist/{id}", name="artist_view", methods={"GET"}, requirements={"id"="\d+"})
      */
-    public function view($id, ArtistRepository $artistRepository): Response
+    public function view($id, ArtistRepository $artistRepository, Request $request): Response
     {
         $artist = $artistRepository->findOneBy(['id'=>$id]);
+        $artist->setColor($request->get("color"));
+
+        // dd($artist, $request->get("color"));
 
         return $this->render('artist/view.html.twig', [
             'artist' => $artist,
