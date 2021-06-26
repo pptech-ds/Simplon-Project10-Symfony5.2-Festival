@@ -32,7 +32,8 @@ class ArtistRepository extends ServiceEntityRepository
             // ->select('a.id', 'a.name' , 'a.isLive', 'a.description', 'a.concert'); 
             if($category != null) {
                 $query->innerJoin('a.category', 'c');
-                $query->andWhere('c.id = :id')->setParameter('id', $category);
+                $query->andWhere('c.id = :id')
+                    ->setParameter('id', $category);
             } 
         return $query->getQuery()->getResult();
     }
@@ -47,11 +48,33 @@ class ArtistRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT a.id, a.name, a.description, a.isLive, c.id AS categoryId, c.name AS categoryName, c.color AS categoryColor, (SELECT COUNT(b.id) 
-            FROM App\Entity\Artist b) AS NbArtists 
+            'SELECT a.id, a.name, a.description, a.isLive, c.id AS categoryId, c.name AS categoryName, c.color AS categoryColor, 
+                (
+                    SELECT COUNT(b.id) 
+                    FROM App\Entity\Artist b
+                ) AS NbArtists 
             FROM App\Entity\Artist a
             INNER JOIN a.category c
             WHERE a.category = c.id'
+        );
+        return $query->getResult();
+    }
+
+
+    /**
+     * Recherche les artistes en fonction de la catégorie
+     * @return Artist[] Returns an array of Artist objects
+     */    
+    public function findAllAndCountByCategory(int $category = null)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a.id
+            FROM App\Entity\Artist a
+            INNER JOIN a.category c
+            WHERE a.category = 61
+            '
         );
         return $query->getResult();
     }
@@ -65,6 +88,25 @@ class ArtistRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('a')
             ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit)
+        ;
+        return $query->getQuery()->getResult();
+    }
+
+
+    /**
+     * Returns all Annonces per page
+     * @return void 
+     */
+    public function getPaginatedArtistsByCategory(int $category = null, $page, $limit)
+    {
+        $query = $this->createQueryBuilder('a');
+        if($category != null) {
+            $query->innerJoin('a.category', 'c');
+            $query->andWhere('c.id = :id')
+                ->setParameter('id', $category);
+        } 
+        $query->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit)
         ;
         return $query->getQuery()->getResult();

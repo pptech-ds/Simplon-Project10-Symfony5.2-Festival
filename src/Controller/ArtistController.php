@@ -82,32 +82,47 @@ class ArtistController extends AbstractController
     }
 
 
+
     /**
-     * @Route("/artist/category_test/{id}/{nbPage}", name="artist_view_by_category_test", methods={"GET"}, requirements={"id"="\d+", "nbPage"="\d+"})
+     * @Route("/artist/category_test2/{id}/page/{pageNum}", name="artist_view_by_category_test2")
      */
-    public function viewByCategoryTest($id, $nbPage, ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
+    public function viewByCategoryTest2($id, $pageNum, Request $request): Response
+    {
+    
+        dd($id, $pageNum);
+
+        return $this->render('artist/home.html.twig', [
+            
+        ]);
+    }
+
+
+    /**
+     * @Route("/artist/category_test/{id}", name="artist_view_by_category_test", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function viewByCategoryTest($id, ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
         // On définit le nombre d'éléments par page
         $limit = 9;
 
         // On récupère le numéro de page
-        // $page = (int)$request->query->get("page", 1);
+        $page = (int)$request->query->get("page", 1);
         // $id = $request->query->get("id");
 
         // dd($id);
-        dd($nbPage);
+        // dd($nbPage);
 
         // $artistsAll = $artistRepository->findAll();
-        $artists = $artistRepository->findAllAndCount();
+        $artists = $artistRepository->findAllAndCountByCategory($id);
         $categories = $categoryRepository->findAll();
 
-        $artistsPaginated = $artistRepository->getPaginatedArtists($page, $limit);
+        $artistsPaginated = $artistRepository->getPaginatedArtistsByCategory($id, $page, $limit);
 
         // dd($artistsAll);
         // dd($artists);
         // dd($artistsPaginated);
 
-        $nbPages = ceil($artists[0]["NbArtists"] / $limit);
+        $nbPages = ceil(count($artists) / $limit);
         
 
         // for($i=0; $i<$nbPages; $i++){
@@ -119,7 +134,7 @@ class ArtistController extends AbstractController
         return $this->render('artist/home.html.twig', [
             'artists' => $artistsPaginated,
             'categories' => $categories,
-            'nbPages' => 10,
+            'nbPages' => $nbPages,
         ]);
     }
 }
