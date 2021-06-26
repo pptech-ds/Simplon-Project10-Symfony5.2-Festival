@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Artist;
 use App\Entity\Category;
+use App\Service\ArtistHandler;
+use App\Service\CategoryHandler;
 use App\Repository\ArtistRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtistController extends AbstractController
 {
     /**
-     * @Route("/artist", name="artist_home")
+     * @Route("/artist", name="artist_list")
      */
-    public function home(ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
+    public function list(CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
     {
         // max element per page
         $limit = 9;
@@ -24,36 +26,43 @@ class ArtistController extends AbstractController
         // getting page number
         $page = (int)$request->query->get("page", 1);
 
-        $artists = $artistRepository->findAll();
-        $categories = $categoryRepository->findAll();
-
-        // getting paginated artists
-        $artistsPaginated = $artistRepository->findPaginatedArtists($page, $limit);
-
+        // getting handlers from defined services
+        $categories = $categoryHandler->handle();
+        $artists = $artistHandler->handle();
+        $artistsPaginated = $artistHandler->handlePagination($limit, $page);
+        
+        // calculating number of total pages
         $nbPages = ceil(count($artists) / $limit);
 
-        $categoryColors = [
-            'Mélodique' => 'primary',
-            'Industrielle' => 'secondary',
-            'Groovy' => 'success',
-            'Deep' => 'info',
-            'Détroit' => 'warning',
-        ];
+        return $this->render('artist/list.html.twig', [
+            'artists' => $artistsPaginated,
+            'categories' => $categories,
+            'nbPages' => $nbPages,
+        ]);
+    }
 
-        foreach ($categories as $category){
-            $category->setColor($categoryColors[$category->getName()]);
-        }
 
-        foreach ($artists as $artist){
-            $color = $artist->getCategory() ? $categoryColors[$artist->getCategory()->getName()] : 'dark';
-            $artist->setColor($color);
-        }
 
-        // dd($artistsPaginated);
+    /**
+     * @Route("/artist/category/{id}", name="artist_list_by_category", methods={"GET"}, requirements={"id"="\d+"})
+     */
+    public function listByCategory($id, CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
+    {
+        // max element per page
+        $limit = 9;
 
-        // dd($artists);
+        // getting page number
+        $page = (int)$request->query->get("page", 1);
+        
+        // getting handlers from defined services
+        $categories = $categoryHandler->handle();
+        $artists = $artistHandler->handleByCategory($id);
+        $artistsPaginated = $artistHandler->handlePaginationByCategory($id, $limit, $page);
 
-        return $this->render('artist/home.html.twig', [
+        // calculating number of total pages
+        $nbPages = ceil(count($artists) / $limit);
+
+        return $this->render('artist/list.html.twig', [
             'artists' => $artistsPaginated,
             'categories' => $categories,
             'nbPages' => $nbPages,
@@ -65,9 +74,9 @@ class ArtistController extends AbstractController
     /**
      * @Route("/artist/{id}", name="artist_view", methods={"GET"}, requirements={"id"="\d+"})
      */
-    public function view($id, Request $request): Response
+    public function view($id, ArtistRepository $artistRepository): Response
     {
-        $artist = $this->getDoctrine()->getRepository(Artist::class)->findOneBy(['id'=>$id]);
+        $artist = $artistRepository->findOneBy(['id'=>$id]);
 
         return $this->render('artist/view.html.twig', [
             'artist' => $artist,
@@ -76,45 +85,5 @@ class ArtistController extends AbstractController
 
 
     
-    /**
-     * @Route("/artist/category/{id}", name="artist_view_by_category", methods={"GET"}, requirements={"id"="\d+"})
-     */
-    public function viewByCategory($id, ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
-    {
-        // max element per page
-        $limit = 9;
-
-        // getting page number
-        $page = (int)$request->query->get("page", 1);
-        
-        $artists = $artistRepository->findByCategory($id);
-        $categories = $categoryRepository->findAll();
-
-        $artistsPaginated = $artistRepository->findPaginatedArtistsByCategory($id, $page, $limit);
-
-        $nbPages = ceil(count($artists) / $limit);
-
-        $categoryColors = [
-            'Mélodique' => 'primary',
-            'Industrielle' => 'secondary',
-            'Groovy' => 'success',
-            'Deep' => 'info',
-            'Détroit' => 'warning',
-        ];
-
-        foreach ($categories as $category){
-            $category->setColor($categoryColors[$category->getName()]);
-        }
-
-        foreach ($artists as $artist){
-            $color = $artist->getCategory() ? $categoryColors[$artist->getCategory()->getName()] : 'dark';
-            $artist->setColor($color);
-        }
-
-        return $this->render('artist/home.html.twig', [
-            'artists' => $artistsPaginated,
-            'categories' => $categories,
-            'nbPages' => $nbPages,
-        ]);
-    }
+    
 }
