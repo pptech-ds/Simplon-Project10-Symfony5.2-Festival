@@ -6,7 +6,6 @@
 
 <div class="text-center mb-5 mt-5">
     {% for category in categories %}
-        {# <button type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</button> #}
         <a href="{{ path('artist_list_by_category', {'id':category.id, 'page':1}) }}" type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</a>
     {% endfor %}
 </div>
@@ -26,7 +25,7 @@
                 <div class="card-body">
                     <h4 class="card-title"> {{ artist.name }}</h4>
                     <p class="card-text">{{ artist.description | u.truncate(100, '...') }} </p>
-                    <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id}) }}">Decouvrir l'artiste</a></p>
+                    <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id, 'color':artist.color}) }}">Decouvrir l'artiste</a></p>
                 </div>
             
             </div>
