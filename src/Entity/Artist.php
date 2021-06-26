@@ -23,11 +23,6 @@ class Artist
     private $name;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isLive;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="artists")
      */
     private $category;
@@ -42,6 +37,8 @@ class Artist
      */
     private $concert;
 
+    private $color;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,18 +52,6 @@ class Artist
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getIsLive(): ?bool
-    {
-        return $this->isLive;
-    }
-
-    public function setIsLive(bool $isLive): self
-    {
-        $this->isLive = $isLive;
 
         return $this;
     }
@@ -103,6 +88,24 @@ class Artist
     public function setConcert(?int $concert): self
     {
         $this->concert = $concert;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of color
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set the value of color
+     */
+    public function setColor($color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

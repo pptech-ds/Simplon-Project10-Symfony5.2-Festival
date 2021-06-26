@@ -19,10 +19,10 @@
     {% for artist in artists %}
         <div class="col-4">
             
-            <div class="card border-{{artist.category.color}} mb-5" style="max-width: 23rem; min-height: 15rem">
+            <div class="card border-{{artist.color}} mb-5" style="max-width: 23rem; min-height: 15rem">
             
                 
-                <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist.isLive) ? 'secondary' : 'primary' }}">{{ (artist.isLive) ? 'En concert' : 'Music de rue' }}</span></div>
+                <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist.concert != NULL) ? 'secondary' : 'primary' }}">{{ (artist.concert != NULL) ? 'En concert' : 'Music de rue' }}</span></div>
                 <div class="card-body">
                     <h4 class="card-title"> {{ artist.name }}</h4>
                     <p class="card-text">{{ artist.description | u.truncate(100, '...') }} </p>
