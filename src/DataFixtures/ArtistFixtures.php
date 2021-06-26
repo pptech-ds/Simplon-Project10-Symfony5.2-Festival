@@ -14,12 +14,16 @@ class ArtistFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
+        $concert = 1;
 
-        for($nbArtists = 1; $nbArtists <= 200; $nbArtists++ ) {
+        for($i = 1; $i <= 200; $i++ ) {
             $category = $this->getReference('category_' . $faker->numberBetween(1, 5));
             $artist = new Artist;
             $artist->setCategory($category);
-            // $artist->setConcert($faker->numberBetween(1, 9));
+            if($concert < 10 && rand(1,50) < 5) {
+                $artist->setConcert($concert);
+                $concert++;
+            }
             $artist->setName('DJ '.$faker->lastName);
             $artist->setDescription($faker->realText(5000));
             $artist->setIsLive($faker->numberBetween(0, 1));
