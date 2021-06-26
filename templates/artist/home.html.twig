@@ -36,21 +36,36 @@
 </div>
 
 <div>
+<pre>
+
+</pre>
   <ul class="pagination">
     {% if (app.request.get('id')) %}
+        <li class="page-item {{ app.request.get('page')==1 ? 'disabled' : '' }} ">
+            <a class="page-link mx-1 my-2" href="{{ path('artist_view_by_category', {'id':app.request.get('id'), 'page':app.request.get('page')-1}) }}">&laquo;</a>
+        </li>
         {% for i in 1 .. nbPages %}
             <li class="page-item {{ i == app.request.get('page') ? 'active' : '' }}">
                 <a class="page-link mx-1 my-2" href="{{ path('artist_view_by_category', {'id':app.request.get('id'), 'page':i}) }}"> {{ i }}</a>
             </li>
         {% endfor %}
+        <li class="page-item {{ app.request.get('page')==nbPages ? 'disabled' : '' }}">
+            <a class="page-link mx-1 my-2" href="{{ path('artist_view_by_category', {'id':app.request.get('id'), 'page':app.request.get('page')+1}) }}">&raquo;</a>
+        </li>
     {% else %}
+        <li class="page-item {{ app.request.get('page')==1 ? 'disabled' : '' }} ">
+            <a class="page-link mx-1 my-2" href="{{ path('artist_home', {'page':app.request.get('page')-1}) }}">&laquo;</a>
+        </li>
         {% for i in 1 .. nbPages %}
             <li class="page-item {{ i == app.request.get('page') ? 'active' : '' }}">
                 <a class="page-link mx-1 my-2" href="{{ path('artist_home', {'page':i}) }}"> {{ i }}</a>
             </li>
         {% endfor %}
+        <li class="page-item {{ app.request.get('page')==nbPages ? 'disabled' : '' }}">
+            <a class="page-link mx-1 my-2" href="{{ path('artist_home', {'page':app.request.get('page')+1}) }}">&raquo;</a>
+        </li>
     {% endif %}
-
+    
   </ul>
 </div>
 
