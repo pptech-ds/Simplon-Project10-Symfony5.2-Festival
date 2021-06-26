@@ -31,7 +31,28 @@ class ArtistController extends AbstractController
         $artistsPaginated = $artistRepository->findPaginatedArtists($page, $limit);
 
         $nbPages = ceil(count($artists) / $limit);
-        
+
+        $categoryColors = [
+            'Mélodique' => 'primary',
+            'Industrielle' => 'secondary',
+            'Groovy' => 'success',
+            'Deep' => 'info',
+            'Détroit' => 'warning',
+        ];
+
+        foreach ($categories as $category){
+            $category->setColor($categoryColors[$category->getName()]);
+        }
+
+        foreach ($artists as $artist){
+            $color = $artist->getCategory() ? $categoryColors[$artist->getCategory()->getName()] : 'dark';
+            $artist->setColor($color);
+        }
+
+        // dd($artistsPaginated);
+
+        // dd($artists);
+
         return $this->render('artist/home.html.twig', [
             'artists' => $artistsPaginated,
             'categories' => $categories,
@@ -72,6 +93,23 @@ class ArtistController extends AbstractController
         $artistsPaginated = $artistRepository->findPaginatedArtistsByCategory($id, $page, $limit);
 
         $nbPages = ceil(count($artists) / $limit);
+
+        $categoryColors = [
+            'Mélodique' => 'primary',
+            'Industrielle' => 'secondary',
+            'Groovy' => 'success',
+            'Deep' => 'info',
+            'Détroit' => 'warning',
+        ];
+
+        foreach ($categories as $category){
+            $category->setColor($categoryColors[$category->getName()]);
+        }
+
+        foreach ($artists as $artist){
+            $color = $artist->getCategory() ? $categoryColors[$artist->getCategory()->getName()] : 'dark';
+            $artist->setColor($color);
+        }
 
         return $this->render('artist/home.html.twig', [
             'artists' => $artistsPaginated,

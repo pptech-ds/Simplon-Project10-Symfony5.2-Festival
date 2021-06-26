@@ -13,30 +13,30 @@ class CategoryFixtures extends Fixture
         $categories = [
             1 => [
                 'name' => 'Mélodique',
-                'color' => 'primary',
+                // 'color' => 'primary',
             ],
             2 => [
                 'name' => 'Industrielle',
-                'color' => 'secondary',
+                // 'color' => 'secondary',
             ],
             3 => [
                 'name' => 'Groovy',
-                'color' => 'success',
+                // 'color' => 'success',
             ],
             4 => [
                 'name' => 'Deep',
-                'color' => 'info',
+                // 'color' => 'info',
             ],
             5 => [
                 'name' => 'Détroit',
-                'color' => 'warning',
+                // 'color' => 'warning',
             ],
         ];
 
         foreach ($categories as $key => $value) {
             $category = new Category;
             $category->setName($value['name']);
-            $category->setColor($value['color']);
+            // $category->setColor($value['color']);
             $manager->persist($category);
 
             // Enregistre la catégorie dans une référence
