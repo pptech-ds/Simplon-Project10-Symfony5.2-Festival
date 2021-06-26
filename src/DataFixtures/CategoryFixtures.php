@@ -10,37 +10,15 @@ class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $categories = [
-            1 => [
-                'name' => 'Mélodique',
-                // 'color' => 'primary',
-            ],
-            2 => [
-                'name' => 'Industrielle',
-                // 'color' => 'secondary',
-            ],
-            3 => [
-                'name' => 'Groovy',
-                // 'color' => 'success',
-            ],
-            4 => [
-                'name' => 'Deep',
-                // 'color' => 'info',
-            ],
-            5 => [
-                'name' => 'Détroit',
-                // 'color' => 'warning',
-            ],
-        ];
+        $categories = ['Mélodique', 'Industrielle', 'Groovy', 'Deep', 'Détroit'];
 
-        foreach ($categories as $key => $value) {
+        for($i=0; $i<count($categories); $i++) {
             $category = new Category;
-            $category->setName($value['name']);
-            // $category->setColor($value['color']);
+            $category->setName($categories[$i]);
             $manager->persist($category);
 
-            // Enregistre la catégorie dans une référence
-            $this->addReference('category_' . $key, $category);
+            // Creating references to get them in ArtitFixtures
+            $this->addReference('category_' . $i, $category);
         }
         $manager->flush();
     }

@@ -17,12 +17,17 @@ class ArtistFixtures extends Fixture implements DependentFixtureInterface
         $concert = 1;
 
         for($i = 1; $i <= 200; $i++ ) {
-            $category = $this->getReference('category_' . $faker->numberBetween(1, 5));
+            // getting references created in CategoryFixtures
+            $category = $this->getReference('category_' . $faker->numberBetween(0, 4));
             $artist = new Artist;
+
+            // rand used to generated some artists not in any specific category
             if(rand(1,50) < 40) {
                 $artist->setCategory($category);
             }
-            if($concert < 10 && rand(1,50) < 5) {
+
+            // rand used to set artist in concert randomly 
+            if($concert <= 9 && (rand(75,150) < 80)) {
                 $artist->setConcert($concert);
                 $concert++;
             }
@@ -35,7 +40,7 @@ class ArtistFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies()
     {
-        // retourne la liste des dépendances du notre objet, qui doivent s'exécuter avant
+        // dependencies
         return [
             CategoryFixtures::class            
         ];
