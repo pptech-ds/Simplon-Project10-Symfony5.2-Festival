@@ -7,7 +7,7 @@
 <div class="text-center mb-5 mt-5">
     {% for category in categories %}
         {# <button type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</button> #}
-        <a href="{{ path('artist_view_by_category_test', {'id':category.id, 'page':1}) }}" type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</a>
+        <a href="{{ path('artist_view_by_category', {'id':category.id, 'page':1}) }}" type="button" class="btn btn-outline-{{category.color}}">{{category.name}}</a>
     {% endfor %}
 </div>
 
@@ -40,7 +40,7 @@
     {% if (app.request.get('id')) %}
         {% for i in 1 .. nbPages %}
             <li class="page-item {{ i == app.request.get('page') ? 'active' : '' }}">
-                <a class="page-link mx-1 my-2" href="{{ path('artist_view_by_category_test', {'id':app.request.get('id'), 'page':i}) }}"> {{ i }}</a>
+                <a class="page-link mx-1 my-2" href="{{ path('artist_view_by_category', {'id':app.request.get('id'), 'page':i}) }}"> {{ i }}</a>
             </li>
         {% endfor %}
     {% else %}

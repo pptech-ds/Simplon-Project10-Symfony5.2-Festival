@@ -18,31 +18,20 @@ class ArtistController extends AbstractController
      */
     public function home(ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        // On définit le nombre d'éléments par page
+        // max element per page
         $limit = 9;
 
-        // On récupère le numéro de page
+        // getting page number
         $page = (int)$request->query->get("page", 1);
 
-        // $artistsAll = $artistRepository->findAll();
-        $artists = $artistRepository->findAllAndCount();
+        $artists = $artistRepository->findAll();
         $categories = $categoryRepository->findAll();
 
-        $artistsPaginated = $artistRepository->getPaginatedArtists($page, $limit);
+        // getting paginated artists
+        $artistsPaginated = $artistRepository->findPaginatedArtists($page, $limit);
 
-        // dd($artistsAll);
-        // dd($artists);
-        // dd($artistsPaginated);
-
-        $nbPages = ceil($artists[0]["NbArtists"] / $limit);
+        $nbPages = ceil(count($artists) / $limit);
         
-
-        // for($i=0; $i<$nbPages; $i++){
-        //     echo 'page '.$i.'<br>';
-        // }
-
-        // dd($nbPages);
-
         return $this->render('artist/home.html.twig', [
             'artists' => $artistsPaginated,
             'categories' => $categories,
@@ -65,71 +54,24 @@ class ArtistController extends AbstractController
     }
 
 
+    
     /**
      * @Route("/artist/category/{id}", name="artist_view_by_category", methods={"GET"}, requirements={"id"="\d+"})
      */
-    public function viewByCategory($id): Response
+    public function viewByCategory($id, ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        $artists = $this->getDoctrine()->getRepository(Artist::class)->findByCategory($id);
-        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
-
-        // dd($artist);
-
-        return $this->render('artist/home.html.twig', [
-            'artists' => $artists,
-            'categories' => $categories,
-        ]);
-    }
-
-
-
-    /**
-     * @Route("/artist/category_test2/{id}/page/{pageNum}", name="artist_view_by_category_test2")
-     */
-    public function viewByCategoryTest2($id, $pageNum, Request $request): Response
-    {
-    
-        dd($id, $pageNum);
-
-        return $this->render('artist/home.html.twig', [
-            
-        ]);
-    }
-
-
-    /**
-     * @Route("/artist/category_test/{id}", name="artist_view_by_category_test", methods={"GET"}, requirements={"id"="\d+"})
-     */
-    public function viewByCategoryTest($id, ArtistRepository $artistRepository, CategoryRepository $categoryRepository, Request $request): Response
-    {
-        // On définit le nombre d'éléments par page
+        // max element per page
         $limit = 9;
 
-        // On récupère le numéro de page
+        // getting page number
         $page = (int)$request->query->get("page", 1);
-        // $id = $request->query->get("id");
-
-        // dd($id);
-        // dd($nbPage);
-
-        // $artistsAll = $artistRepository->findAll();
-        $artists = $artistRepository->findAllAndCountByCategory($id);
+        
+        $artists = $artistRepository->findByCategory($id);
         $categories = $categoryRepository->findAll();
 
-        $artistsPaginated = $artistRepository->getPaginatedArtistsByCategory($id, $page, $limit);
-
-        // dd($artistsAll);
-        // dd($artists);
-        // dd($artistsPaginated);
+        $artistsPaginated = $artistRepository->findPaginatedArtistsByCategory($id, $page, $limit);
 
         $nbPages = ceil(count($artists) / $limit);
-        
-
-        // for($i=0; $i<$nbPages; $i++){
-        //     echo 'page '.$i.'<br>';
-        // }
-
-        // dd($nbPages);
 
         return $this->render('artist/home.html.twig', [
             'artists' => $artistsPaginated,

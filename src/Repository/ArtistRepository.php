@@ -39,52 +39,12 @@ class ArtistRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * Recherche les artistes en fonction de la catégorie
-     * @return Artist[] Returns an array of Artist objects
-     */    
-    public function findAllAndCount()
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT a.id, a.name, a.description, a.isLive, c.id AS categoryId, c.name AS categoryName, c.color AS categoryColor, 
-                (
-                    SELECT COUNT(b.id) 
-                    FROM App\Entity\Artist b
-                ) AS NbArtists 
-            FROM App\Entity\Artist a
-            INNER JOIN a.category c
-            WHERE a.category = c.id'
-        );
-        return $query->getResult();
-    }
-
-
-    /**
-     * Recherche les artistes en fonction de la catégorie
-     * @return Artist[] Returns an array of Artist objects
-     */    
-    public function findAllAndCountByCategory(int $category = null)
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT a.id
-            FROM App\Entity\Artist a
-            INNER JOIN a.category c
-            WHERE a.category = 61
-            '
-        );
-        return $query->getResult();
-    }
-
 
     /**
      * Returns all Annonces per page
      * @return void 
      */
-    public function getPaginatedArtists($page, $limit)
+    public function findPaginatedArtists($page, $limit)
     {
         $query = $this->createQueryBuilder('a')
             ->setFirstResult(($page * $limit) - $limit)
@@ -98,7 +58,7 @@ class ArtistRepository extends ServiceEntityRepository
      * Returns all Annonces per page
      * @return void 
      */
-    public function getPaginatedArtistsByCategory(int $category = null, $page, $limit)
+    public function findPaginatedArtistsByCategory(int $category = null, $page, $limit)
     {
         $query = $this->createQueryBuilder('a');
         if($category != null) {
