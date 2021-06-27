@@ -24,19 +24,21 @@ class BilleterieType extends AbstractType
             ->add('Telephone', TextType::class)
             ->add('Email', EmailType::class)
             ->add('Artiste', TextType::class)
-            ->add('Date', DateType::class, [
-                'widget' => 'single_text',
-                // this is actually the default format for single_text
-                'format' => 'yyyy-MM-dd',
-            ])
-            ->add('Heure', TextType::class)
-            ->add('HeurePlage', ChoiceType::class, [
-                'choices'  => [
-                    '16h - 18h' => true,
-                    '18h - 20h' => true,
-                    '21h - 23h' => true,
-                ],
-            ])
+            ->add('Date', TextType::class)
+            ->add('Plage', TextType::class)
+            // ->add('Date', DateType::class, [
+            //     'widget' => 'single_text',
+            //     // this is actually the default format for single_text
+            //     'format' => 'yyyy-MM-dd',
+            // ])
+            // ->add('Heure', TextType::class)
+            // ->add('HeurePlage', ChoiceType::class, [
+            //     'choices'  => [
+            //         '16h - 18h' => true,
+            //         '18h - 20h' => true,
+            //         '21h - 23h' => true,
+            //     ],
+            //])
             ->add('Nombredeplace', IntegerType::class)
             ->add('Envoyer', SubmitType::class)
         ;
