@@ -32,13 +32,13 @@ class BilleterieType extends AbstractType
             //     'format' => 'yyyy-MM-dd',
             // ])
             // ->add('Heure', TextType::class)
-            // ->add('HeurePlage', ChoiceType::class, [
-            //     'choices'  => [
-            //         '16h - 18h' => true,
-            //         '18h - 20h' => true,
-            //         '21h - 23h' => true,
-            //     ],
-            //])
+            ->add('plage', ChoiceType::class, [
+                'label' => 'Plage Horraire',
+                'choices'  => [
+                    '16h - 18h' => true,
+                    '18h - 20h' => true,
+                    '21h - 23h' => true,
+                ]])
             ->add('nbTickets', IntegerType::class, ['label' => 'Nombre de place'])
             // ->add('Envoyer', SubmitType::class)
         ;

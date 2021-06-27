@@ -40,19 +40,13 @@ class BilleterieController extends AbstractController
      */
     public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer): Response
     {
-        // $user = $userHandler->getUserInfos();
-        // dd($user);
-        // $userEmail = '';
-        // if($user != NULL){
-        //     $userEmail = $user->getEmail();
-        // }
-        
+        // dd($this->getUser());
 
-        // $date = $request->get("date");
-        // $plage = $request->get("plage");
-        
-        // $artist = $request->get("artist");
-        // dd($date, $plage, $userEmail);
+        if($this->getUser() == null){
+            $this->addFlash('billeterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
+            
+            return $this->redirectToRoute('home');
+        }
 
         $form = $this->createForm(BilleterieType::class);
         $form->handleRequest($request);
