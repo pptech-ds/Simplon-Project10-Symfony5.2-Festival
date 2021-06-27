@@ -19,13 +19,13 @@ class BilleterieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Nom', TextType::class)
-            ->add('Prenom', TextType::class)
-            ->add('Telephone', TextType::class)
-            ->add('Email', EmailType::class)
-            ->add('Artiste', TextType::class)
-            ->add('Date', TextType::class)
-            ->add('Plage', TextType::class)
+            ->add('lastname', TextType::class, ['label' => 'Nom'])
+            ->add('firstname', TextType::class, ['label' => 'Prénom'])
+            ->add('phone', TextType::class, ['label' => 'Telephone'])
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('artist', TextType::class, ['label' => 'Artiste'])
+            ->add('date', TextType::class, ['label' => 'Date'])
+            ->add('time', TextType::class, ['label' => 'Plage'])
             // ->add('Date', DateType::class, [
             //     'widget' => 'single_text',
             //     // this is actually the default format for single_text
@@ -39,8 +39,8 @@ class BilleterieType extends AbstractType
             //         '21h - 23h' => true,
             //     ],
             //])
-            ->add('Nombredeplace', IntegerType::class)
-            ->add('Envoyer', SubmitType::class)
+            ->add('nbTickets', IntegerType::class, ['label' => 'Nombre de place'])
+            // ->add('Envoyer', SubmitType::class)
         ;
     }
 
