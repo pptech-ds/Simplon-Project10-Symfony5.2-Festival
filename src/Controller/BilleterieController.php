@@ -62,13 +62,13 @@ class BilleterieController extends AbstractController
 
             // dd($dataForm);
 
-            $message = new \Swift_Message('Festival Technonite Confirmation Reservation');
-            $message->setFrom('admin@festival.com');
-            $message->setTo($userEmail);
+            $message = new \Swift_Message('Festival Technonite Demande de Reservation');
+            $message->setFrom($userEmail);
+            $message->setTo('festival_reservation@festival.com');
             $message->setBody(
-                $this->renderView(
-                    'email/reservation.html.twig',
-                ),
+                $this->renderView('email/reservation.html.twig', [
+                    'dataForm' => $dataForm,
+                ]),
                 'text/html'
             );
 
