@@ -24,8 +24,12 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
         {% endfor %}
 
-        {% for flashSuccess in app.flashes('success') %}
+        {% for flashSuccess in app.flashes('verify_email_success') %}
         <div class="alert alert-success" role="alert">{{ flashSuccess }}</div>
+        {% endfor %}
+
+        {% for flashReservation in app.flashes('reservation_sent') %}
+        <div class="alert alert-success" role="alert">{{ flashReservation }}</div>
         {% endfor %}
         
         <div class="container">

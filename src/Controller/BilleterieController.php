@@ -40,11 +40,18 @@ class BilleterieController extends AbstractController
      */
     public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer): Response
     {
-        $user = $userHandler->getUserInfos();
-        $date = $request->get("date");
-        $plage = $request->get("plage");
-        $userEmail = $user->getEmail();
-        $artist = $request->get("artist");
+        // $user = $userHandler->getUserInfos();
+        // dd($user);
+        // $userEmail = '';
+        // if($user != NULL){
+        //     $userEmail = $user->getEmail();
+        // }
+        
+
+        // $date = $request->get("date");
+        // $plage = $request->get("plage");
+        
+        // $artist = $request->get("artist");
         // dd($date, $plage, $userEmail);
 
         $form = $this->createForm(BilleterieType::class);
@@ -60,10 +67,10 @@ class BilleterieController extends AbstractController
             // $BilleterieForm = $request->get('BilleterieForm');
             // $postData = $request->request->get('contact');
 
-            // dd($dataForm);
+            // dd($dataForm, $form->get('email')->getData());
 
             $message = new \Swift_Message('Festival Technonite Demande de Reservation');
-            $message->setFrom($userEmail);
+            $message->setFrom($form->get('email')->getData());
             $message->setTo('festival_reservation@festival.com');
             $message->setBody(
                 $this->renderView('email/reservation.html.twig', [
@@ -75,25 +82,25 @@ class BilleterieController extends AbstractController
             $mailer->send($message);
 
             // $logger->info('email sent');
-            $this->addFlash('notice', 'Email sent');
+            $this->addFlash('reservation_sent', 'Votre demande de reservation a bien été envoyé aux organisateurs, vous receverez une confirmation prochainement.');
             
             return $this->redirectToRoute('home');
         }
         else{
-            if($userEmail != null){
-                $form->get('email')->setData($userEmail);
+            if($userHandler->getUserInfos() != null){
+                $form->get('email')->setData($userHandler->getUserInfos()->getEmail());
             }
     
-            if($date != null){
-                $form->get('date')->setData($date);
+            if($request->get('date') != null){
+                $form->get('date')->setData($request->get('date'));
             }
     
-            if($plage != null){
-                $form->get('time')->setData($plage);
+            if($request->get('plage') != null){
+                $form->get('time')->setData($request->get('plage'));
             }
     
-            if($plage != null){
-                $form->get('artist')->setData($artist);
+            if($request->get('artist') != null){
+                $form->get('artist')->setData($request->get('artist'));
             }
         }
 
