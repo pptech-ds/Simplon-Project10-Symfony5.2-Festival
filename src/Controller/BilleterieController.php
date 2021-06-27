@@ -38,32 +38,69 @@ class BilleterieController extends AbstractController
     /**
      * @Route("/billeterie", name="billeterie_form")
      */
-    public function billterie(UserHandler $userHandler, Request $request): Response
+    public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer): Response
     {
         $user = $userHandler->getUserInfos();
         $date = $request->get("date");
         $plage = $request->get("plage");
         $userEmail = $user->getEmail();
+        $artist = $request->get("artist");
         // dd($date, $plage, $userEmail);
 
         $form = $this->createForm(BilleterieType::class);
+        $form->handleRequest($request);
 
-        if($userEmail != null){
-            $form->get('Email')->setData($userEmail);
-        }
-
-        if($date != null){
-            $form->get('Date')->setData($date);
-        }
-
-        if($plage != null){
-            $form->get('Plage')->setData($plage);
-        }
         
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // dd('OK');
+
+            $dataForm = $form->getData();
+            // $BilleterieForm = $request->get('BilleterieForm');
+            // $postData = $request->request->get('contact');
+
+            // dd($dataForm);
+
+            $message = new \Swift_Message('Festival Technonite Confirmation Reservation');
+            $message->setFrom('admin@festival.com');
+            $message->setTo($userEmail);
+            $message->setBody(
+                $this->renderView(
+                    'email/reservation.html.twig',
+                ),
+                'text/html'
+            );
+
+            $mailer->send($message);
+
+            // $logger->info('email sent');
+            $this->addFlash('notice', 'Email sent');
+            
+            return $this->redirectToRoute('home');
+        }
+        else{
+            if($userEmail != null){
+                $form->get('email')->setData($userEmail);
+            }
+    
+            if($date != null){
+                $form->get('date')->setData($date);
+            }
+    
+            if($plage != null){
+                $form->get('time')->setData($plage);
+            }
+    
+            if($plage != null){
+                $form->get('artist')->setData($artist);
+            }
+        }
 
         return $this->render('billeterie/form.html.twig', [
-            'form' => $form->createView(),
+            'BilleterieForm' => $form->createView(),
         ]);
+
     }
 
 }

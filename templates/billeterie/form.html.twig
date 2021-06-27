@@ -7,7 +7,23 @@
 
 
 <div class="input-group-addon">
-{{ form(form) }}
+    {# {{ form(form) }} #}
+
+    {{ form_start(BilleterieForm) }}
+        {{ form_row(BilleterieForm.lastname) }}
+        {{ form_row(BilleterieForm.firstname) }}
+        {{ form_row(BilleterieForm.phone) }}
+        {{ form_row(BilleterieForm.email) }}
+        {{ form_row(BilleterieForm.artist) }}
+        {{ form_row(BilleterieForm.date) }}
+        {{ form_row(BilleterieForm.time) }}
+        {{ form_row(BilleterieForm.nbTickets) }}
+
+        <button type="submit" class="mb-3 mt-3 btn btn-lg btn-primary">Envoyer</button>
+
+    {{ form_end(BilleterieForm) }}
+
+    {# <a href="{{ path('mail') }}" type="button" class="mb-3 mt-3 btn btn-lg btn-primary">Envoyer</a> #}
 </div>
 
 

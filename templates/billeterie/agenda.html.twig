@@ -24,7 +24,7 @@
                     <td class="text-left">{{ date }}</td>
                     <td class="text-center">{{ plage }}</td>
                     <td class="text-center">{{ artists[i].name }}</td>
-                    <td class="text-center"><a href="{{path('billeterie_form', {'date':date, 'plage':plage })}}" type="button" class="btn btn-primary">Réserver une place</a></td>
+                    <td class="text-center"><a href="{{path('billeterie_form', {'date':date, 'plage':plage, 'artist':artists[i].name })}}" type="button" class="btn btn-primary">Réserver une place</a></td>
                 </tr>
                 {% set i = i + 1  %}
             {% endfor %}
