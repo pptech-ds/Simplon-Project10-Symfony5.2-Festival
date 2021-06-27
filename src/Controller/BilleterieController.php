@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 use App\Form\BilleterieType;
+use App\Service\UserHandler;
+use App\Repository\UserRepository;
+use App\Repository\ArtistRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,26 +16,21 @@ class BilleterieController extends AbstractController
     /**
      * @Route("/agenda", name="billeterie_agenda")
      */
-    public function agenda(): Response
+    public function agenda(ArtistRepository $artistRepository): Response
     {
-        $table = [];
+        $agenda = [
+            'dates' => ['20/08/2021', '21/08/2021', '22/08/2021'],
+            'plages' => ['16h - 18h', '18h - 20h', '21h - 23h'],
+        ];
 
-        for ($i=0; $i<9; $i++)
-        {
-            // if($i %3 = 0){
-            $row = [
-                'Date' => '2021/06/2'.$i,
-                'Time' => '16:00:0'.$i,
-                'Artist' => 'Artiste '.$i,
-                'Reservation' => 'Reserver une place'
-            ]; 
-            $table[] = $row;
-        }
+        $artists = $artistRepository->findArtitsInConcert();
 
+        // dd($artists);
         // dd($table);
 
         return $this->render('billeterie/agenda.html.twig', [
-            'table_loop' => $table,
+            'agenda' => $agenda,
+            'artists' => $artists,
         ]);
     }
 
@@ -39,9 +38,28 @@ class BilleterieController extends AbstractController
     /**
      * @Route("/billeterie", name="billeterie_form")
      */
-    public function billterie(): Response
+    public function billterie(UserHandler $userHandler, Request $request): Response
     {
+        $user = $userHandler->getUserInfos();
+        $date = $request->get("date");
+        $plage = $request->get("plage");
+        $userEmail = $user->getEmail();
+        // dd($date, $plage, $userEmail);
+
         $form = $this->createForm(BilleterieType::class);
+
+        if($userEmail != null){
+            $form->get('Email')->setData($userEmail);
+        }
+
+        if($date != null){
+            $form->get('Date')->setData($date);
+        }
+
+        if($plage != null){
+            $form->get('Plage')->setData($plage);
+        }
+        
 
         return $this->render('billeterie/form.html.twig', [
             'form' => $form->createView(),
