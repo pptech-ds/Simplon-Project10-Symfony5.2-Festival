@@ -9,6 +9,6 @@
     <p class="card-text"> {{artist.description}}</p></div>
 </div>
 <div class="d-grid gap-2 my-5">
-    <a href="{{ path('artist_list') }}" type="button" class="btn btn-lg btn-primary">Retour à la liste des artistes</a>
+    <a href="{{ path('artist_list', {'page':1}) }}" type="button" class="btn btn-lg btn-primary">Retour à la liste des artistes</a>
 </div>
 {% endblock %}

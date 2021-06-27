@@ -31,6 +31,10 @@
         {% for flashReservation in app.flashes('reservation_sent') %}
         <div class="alert alert-success" role="alert">{{ flashReservation }}</div>
         {% endfor %}
+
+        {% for flashBilleterie in app.flashes('billeterie_register') %}
+        <div class="alert alert-danger" role="alert">{{ flashBilleterie }}</div>
+        {% endfor %}
         
         <div class="container">
         {% block body %}{% endblock %}
