@@ -86,6 +86,27 @@ class ArtistRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Returns all Annonces per page
+     * @return void 
+     */
+    public function findArtitsInConcert2()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->andWhere('a.concert IS NOT NULL')
+        ;
+        $artists = $query->getQuery()->getResult();
+
+        $artistNames = [];
+
+        foreach($artists as $artist){
+            $artistNames[$artist->getName()] = $artist->getName();
+        }
+
+        return $artistNames;
+    }
+
+
 
 
     // /**

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\BilleterieType;
+use App\Form\BilleterieFormType;
 use App\Service\UserHandler;
 use App\Repository\UserRepository;
 use App\Repository\ArtistRepository;
@@ -48,7 +48,7 @@ class BilleterieController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $form = $this->createForm(BilleterieType::class);
+        $form = $this->createForm(BilleterieFormType::class);
         $form->handleRequest($request);
 
         
@@ -90,7 +90,7 @@ class BilleterieController extends AbstractController
             }
     
             if($request->get('plage') != null){
-                $form->get('time')->setData($request->get('plage'));
+                $form->get('plage')->setData($request->get('plage'));
             }
     
             if($request->get('artist') != null){
