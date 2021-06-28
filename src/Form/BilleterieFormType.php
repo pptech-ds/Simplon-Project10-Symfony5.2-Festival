@@ -14,33 +14,39 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class BilleterieType extends AbstractType
+class BilleterieFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    {       
+        
         $builder
             ->add('lastname', TextType::class, ['label' => 'Nom'])
             ->add('firstname', TextType::class, ['label' => 'Prénom'])
             ->add('phone', TextType::class, ['label' => 'Telephone'])
-            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+                'disabled' => true
+                ])
             ->add('artist', TextType::class, ['label' => 'Artiste'])
-            ->add('date', TextType::class, ['label' => 'Date'])
-            ->add('time', TextType::class, ['label' => 'Plage'])
-            // ->add('Date', DateType::class, [
-            //     'widget' => 'single_text',
-            //     // this is actually the default format for single_text
-            //     'format' => 'yyyy-MM-dd',
-            // ])
-            // ->add('Heure', TextType::class)
-            ->add('plage', ChoiceType::class, [
-                'label' => 'Plage Horraire',
+            // ->add('date', TextType::class, ['label' => 'Date'])
+            ->add('date', ChoiceType::class, [
+                'label' => 'Date',
                 'choices'  => [
-                    '16h - 18h' => true,
-                    '18h - 20h' => true,
-                    '21h - 23h' => true,
-                ]])
+                    '20/08/2021' => '20/08/2021',
+                    '21/08/2021' => '21/08/2021',
+                    '22/08/2021' => '22/08/2021',
+                    ]
+                ])
+            // ->add('plage', TextType::class, ['label' => 'Plage'])
+            ->add('plage', ChoiceType::class, [
+                'label' => 'Plage',
+                'choices'  => [
+                    '16h - 18h' => '16h - 18h',
+                    '18h - 20h' => '18h - 20h',
+                    '21h - 23h' => '21h - 23h',
+                    ]
+                ])
             ->add('nbTickets', IntegerType::class, ['label' => 'Nombre de place'])
-            // ->add('Envoyer', SubmitType::class)
         ;
     }
 
