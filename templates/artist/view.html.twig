@@ -2,13 +2,23 @@
 
 {% block title %}{{artist.name}}{% endblock %}
 
+
+
+
 {% block body %}
+
+{# {{ dump(app.request.get('agenda')) }} #}
+
 <div class="card border-{{artist.color}} mb-3 mt-5" style="max-width: 100%;">
   <div class="card-body">
     <h1 class="card-title">{{artist.name}}</h1>
     <p class="card-text"> {{artist.description}}</p></div>
 </div>
 <div class="d-grid gap-2 my-5">
-    <a href="{{ path('artist_list', {'page':1}) }}" type="button" class="btn btn-lg btn-primary">Retour à la liste des artistes</a>
+    {% if app.request.get('agenda') %}
+      <a href="{{ path('billeterie_agenda') }}" type="button" class="btn btn-lg btn-primary">Retour à l'agenda des concerts</a>
+    {% else %}
+      <a href="{{ path('artist_list', {'page':1}) }}" type="button" class="btn btn-lg btn-primary">Retour à la liste des artistes</a>
+    {% endif %}
 </div>
 {% endblock %}
