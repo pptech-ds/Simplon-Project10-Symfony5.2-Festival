@@ -38,7 +38,7 @@ class BilleterieController extends AbstractController
     /**
      * @Route("/billeterie", name="billeterie_form")
      */
-    public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer): Response
+    public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
     {
         // dd($this->getUser());
 
@@ -47,6 +47,8 @@ class BilleterieController extends AbstractController
             
             return $this->redirectToRoute('home');
         }
+
+        $artists = $artistRepository->findArtitsInConcert();
 
         $form = $this->createForm(BilleterieFormType::class);
         $form->handleRequest($request);
@@ -100,6 +102,7 @@ class BilleterieController extends AbstractController
 
         return $this->render('billeterie/form.html.twig', [
             'BilleterieForm' => $form->createView(),
+            'artists' => $artists,
         ]);
 
     }
