@@ -27,7 +27,21 @@ class BilleterieFormType extends AbstractType
                 'label' => 'Email',
                 'disabled' => true
                 ])
-            ->add('artist', TextType::class, ['label' => 'Artiste'])
+            // ->add('artist', TextType::class, ['label' => 'Artiste'])
+            ->add('artist', ChoiceType::class, [
+                'label' => 'Artiste',
+                'choices'  => [
+                    'DJ Laine' => 'DJ Laine',
+                    'DJ Buisson' => 'DJ Buisson',
+                    'DJ Bailly' => 'DJ Bailly',
+                    'DJ Lebrun' => 'DJ Lebrun',
+                    'DJ Joseph' => 'DJ Joseph',
+                    'DJ David' => 'DJ David',
+                    'DJ Le Roux' => 'DJ Le Roux',
+                    'DJ Picard' => 'DJ Picard',
+                    'DJ Riou' => 'DJ Riou',
+                    ]
+                ])
             // ->add('date', TextType::class, ['label' => 'Date'])
             ->add('date', ChoiceType::class, [
                 'label' => 'Date',
