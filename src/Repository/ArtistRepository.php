@@ -42,7 +42,7 @@ class ArtistRepository extends ServiceEntityRepository
 
     /**
      * Returns all Annonces per page
-     * @return void 
+     * @return Artist[] Returns an array of Artist objects 
      */
     public function findPaginatedArtists($page, $limit)
     {
@@ -56,7 +56,7 @@ class ArtistRepository extends ServiceEntityRepository
 
     /**
      * Returns all Annonces per page
-     * @return void 
+     * @return Artist[] Returns an array of Artist objects 
      */
     public function findPaginatedArtistsByCategory(int $category = null, $page, $limit)
     {
@@ -75,7 +75,7 @@ class ArtistRepository extends ServiceEntityRepository
 
     /**
      * Returns all Annonces per page
-     * @return void 
+     * @return Artist[] Returns an array of Artist objects
      */
     public function findArtitsInConcert()
     {
@@ -86,25 +86,25 @@ class ArtistRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * Returns all Annonces per page
-     * @return void 
-     */
-    public function findArtitsInConcert2()
-    {
-        $query = $this->createQueryBuilder('a')
-            ->andWhere('a.concert IS NOT NULL')
-        ;
-        $artists = $query->getQuery()->getResult();
+    // /**
+    //  * Returns all Annonces per page
+    //  * @return void 
+    //  */
+    // public function findArtitsInConcert2()
+    // {
+    //     $query = $this->createQueryBuilder('a')
+    //         ->andWhere('a.concert IS NOT NULL')
+    //     ;
+    //     $artists = $query->getQuery()->getResult();
 
-        $artistNames = [];
+    //     $artistNames = [];
 
-        foreach($artists as $artist){
-            $artistNames[$artist->getName()] = $artist->getName();
-        }
+    //     foreach($artists as $artist){
+    //         $artistNames[$artist->getName()] = $artist->getName();
+    //     }
 
-        return $artistNames;
-    }
+    //     return $artistNames;
+    // }
 
 
 
