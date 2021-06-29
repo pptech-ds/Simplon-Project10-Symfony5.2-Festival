@@ -17,6 +17,10 @@
         </tr>
     </thead>
     <tbody>
+        {% for flashArtistSelection in app.flashes('billeterie_artist_selection') %}
+        <div class="alert alert-danger" role="alert">{{ flashArtistSelection }}</div>
+        {% endfor %}
+
         {% set i = 0 %}
         {% for date in agenda.dates %}
             {% for plage in agenda.plages %}

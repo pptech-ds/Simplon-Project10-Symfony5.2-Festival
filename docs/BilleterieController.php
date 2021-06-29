@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Form\BilleterieFormType;
 use App\Service\UserHandler;
+use App\Form\BilleterieFormType;
 use App\Repository\UserRepository;
 use App\Repository\ArtistRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BilleterieController extends AbstractController
@@ -47,7 +49,14 @@ class BilleterieController extends AbstractController
             
             return $this->redirectToRoute('home');
         }
+
+        $artists = $artistRepository->findArtitsInConcert();
         
+        $artists_array = [];
+        foreach($artists as $artist){
+            $artists_array[$artist->getName()] = $artist->getName();
+        }
+        // dd($artists_array);
 
         $form = $this->createForm(BilleterieFormType::class);
         $form->handleRequest($request);
@@ -87,26 +96,58 @@ class BilleterieController extends AbstractController
             }
     
             if($request->get('date') != null){
-                $form->get('date')->setData($request->get('date'));
+                // $form->get('date')->setData($request->get('date'));
+                $form->add('date', ChoiceType::class, [
+                    'label' => 'Date',
+                    'choices'  => [$request->get('date') => $request->get('date')]
+                    ]);
+            }
+            else{
+                $form->add('date', ChoiceType::class, [
+                    'label' => 'Date',
+                    'choices'  => [
+                        '20/08/2021' => '20/08/2021',
+                        '21/08/2021' => '21/08/2021',
+                        '22/08/2021' => '22/08/2021',
+                    ]
+                    ]);
             }
     
             if($request->get('plage') != null){
-                $form->get('plage')->setData($request->get('plage'));
+                // $form->get('plage')->setData($request->get('plage'));
+                $form->add('plage', ChoiceType::class, [
+                    'label' => 'Plage',
+                    'choices'  => [$request->get('plage') => $request->get('plage')]
+                    ]);
+            }
+            else{
+                $form->add('plage', ChoiceType::class, [
+                    'label' => 'Plage',
+                    'choices'  => [
+                        '16h - 18h' => '16h - 18h',
+                        '18h - 20h' => '18h - 20h',
+                        '21h - 23h' => '21h - 23h',
+                        ]
+                    ]);
             }
     
             if($request->get('artist') != null){
-                $form->get('artist')->setData($request->get('artist'));
+                $form->add('artist', ChoiceType::class, [
+                    'label' => 'Artiste',
+                    'choices'  => [$request->get('artist') => $request->get('artist')]
+                    ]);
             }
             else{
-                $this->addFlash('billeterie_artist_selection', 'Vous devez d\'abord choisir l\'artiste du concert selon les plages horraires definies dans l\'agenda 
-                avant de reserver vos billets !');
-            
-                return $this->redirectToRoute('billeterie_agenda');
+                $form->add('artist', ChoiceType::class, [
+                    'label' => 'Artiste',
+                    'choices'  => $artists_array
+                    ]);
             }
         }
 
         return $this->render('billeterie/form.html.twig', [
             'BilleterieForm' => $form->createView(),
+            'artists' => $artists,
         ]);
 
     }
