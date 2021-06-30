@@ -31,7 +31,8 @@
                     {# <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id, 'color':artist.color}) }}">Decouvrir l'artiste</a></p> #}
                     <td class="text-center"><a href="{{ path('artist_view', {'id':artists[i].id, 'color':'secondary', 'agenda':true}) }}" class="text-decoration-none">{{ artists[i].name }}</a></td>
                     {# <td class="text-center">{{ artists[i].name }}</td> #}
-                    <td class="text-center"><a href="{{path('billeterie_form', {'date':date, 'plage':plage, 'artist':artists[i].name })}}" type="button" class="btn btn-primary">Réserver une place</a></td>
+                    {# <td class="text-center"><a href="{{path('billeterie_form', {'date':date, 'plage':plage, 'artist':artists[i].name })}}" type="button" class="btn btn-primary">Réserver une place</a></td> #}
+                    <td class="text-center"><a href="{{path('billeterie_form')}}" type="button" class="btn btn-primary">Réserver une place</a></td>
                 </tr>
                 {% set i = i + 1  %}
             {% endfor %}
