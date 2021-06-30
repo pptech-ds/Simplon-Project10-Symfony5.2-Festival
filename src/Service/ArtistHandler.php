@@ -15,15 +15,8 @@ class ArtistHandler
     }
 
 
-    public function handle($id=null)
+    public function handle($artists, $id=null)
     {
-        if($id){
-            $artists = $this->artistRepository->findByCategory($id);
-        }
-        else{
-            $artists = $this->artistRepository->findAll();
-        }
-        
         $categoryColors = [
             'Mélodique' => 'primary',
             'Industrielle' => 'secondary',
@@ -41,7 +34,7 @@ class ArtistHandler
     }
 
 
-    public function paginate($id=null, CategoryHandler $categoryHandler, Request $request)
+    public function paginate($artists, CategoryHandler $categoryHandler, Request $request, $id=null)
     {
         // max element per page
         $limit = 9;
@@ -55,13 +48,13 @@ class ArtistHandler
         // $artistsPaginated= [];
 
         if($id){
-            $artists = $this->handle($id);
-            $artistsPaginated = $this->handlePagination($id, $limit, $page);
+            $artists = $this->handle($artists, $id);
+            // $artistsPaginated = $this->handlePagination($limit, $page, $id);
             // dd('by ID', $artistsPaginated);
         }
         else{
-            $artists = $this->handle();
-            $artistsPaginated = $this->handlePagination($id=null, $limit, $page);
+            $artists = $this->handle($artists);
+            // $artistsPaginated = $this->handlePagination($limit, $page);
             // dd('all',$artistsPaginated);
         }
         
@@ -74,25 +67,24 @@ class ArtistHandler
         return [
             'categories' => $categories,
             'artists' => $artists,
-            'artistsPaginated' => $artistsPaginated,
             'nbPages' => $nbPages,
         ];
         
     }
 
 
-    public function handlePagination($id=null, $limit, $page)
-    {
-        if($id){
-            $artistsPaginated = $this->artistRepository->findPaginatedArtistsByCategory($id, $page, $limit);
-        }
-        else{
-            $artistsPaginated = $this->artistRepository->findPaginatedArtists($page, $limit);
-        }
+    // public function handlePagination($limit, $page, $id=null)
+    // {
+    //     if($id){
+    //         $artistsPaginated = $this->artistRepository->findPaginatedArtistsByCategory($id, $page, $limit);
+    //     }
+    //     else{
+    //         $artistsPaginated = $this->artistRepository->findPaginatedArtists($page, $limit);
+    //     }
         
 
-        return $artistsPaginated;
-    }
+    //     return $artistsPaginated;
+    // }
 
 
 }
