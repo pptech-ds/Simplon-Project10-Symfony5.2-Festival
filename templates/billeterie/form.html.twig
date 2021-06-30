@@ -15,9 +15,11 @@
         {{ form_row(BilleterieForm.lastname) }}
         {{ form_row(BilleterieForm.firstname) }}
         {{ form_row(BilleterieForm.phone) }}
-        {{ form_row(BilleterieForm.email) }}
+        {# {{ form_row(BilleterieForm.email) }} #}
 
-        {% if app.request.get('artist') != null %}
+
+
+        {# {% if app.request.get('artist') != null %}
             {{ form_row(BilleterieForm.artist, {
                                 disabled: true
             }) }}
@@ -41,7 +43,7 @@
             {{ form_row(BilleterieForm.plage) }}
         {% endif %}
 
-        {{ form_row(BilleterieForm.nbTickets) }}
+        {{ form_row(BilleterieForm.nbTickets) }} #}
 
         <button type="submit" class="mb-3 mt-3 btn btn-lg btn-primary">Envoyer</button>
 
