@@ -41,6 +41,54 @@ class ArtistRepository extends ServiceEntityRepository
 
 
     /**
+     * Recherche les artistes en fonction de la catégorie
+     * @return Artist[] Returns an array of Artist objects
+     */    
+    public function findAllAndCount()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a.id, a.name, a.description, c.id AS categoryId, c.name AS categoryName, (SELECT COUNT(b.id) 
+            FROM App\Entity\Artist b) AS NbArtists 
+            FROM App\Entity\Artist a
+            INNER JOIN a.category c
+            WHERE a.category = c.id'
+        );
+
+        dd($query->getResult());
+
+        return $query->getResult();
+    }
+
+
+    /**
+     * Recherche les artistes en fonction de la catégorie
+     * @return Artist[] Returns an array of Artist objects
+     */    
+    public function findAllAndCountByCategory(int $category = null)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a.id, a.name, a.description, c.id AS categoryId, c.name AS categoryName, 
+                (
+                    SELECT COUNT(b.id) 
+                    FROM App\Entity\Artist b
+                ) AS NbArtists 
+                FROM App\Entity\Artist a
+                INNER JOIN a.category c
+                WHERE a.category = c.id
+                AND c.id = 37'
+        );
+
+        dd($query->getResult());
+
+        return $query->getResult();
+    }
+
+
+    /**
      * Returns all Annonces per page
      * @return Artist[] Returns an array of Artist objects 
      */
@@ -71,6 +119,7 @@ class ArtistRepository extends ServiceEntityRepository
         ;
         return $query->getQuery()->getResult();
     }
+    
 
 
     /**

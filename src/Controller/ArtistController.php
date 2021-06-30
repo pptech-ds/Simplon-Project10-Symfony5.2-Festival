@@ -16,35 +16,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ArtistController extends AbstractController
 {
     /**
-     * @Route("/artist", name="artist_list")
-     */
-    public function list(CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
-    {
-        $pagination = $artistHandler->paginate($id=null, $categoryHandler, $request);
-
-        return $this->render('artist/list.html.twig', [
-            'artists' => $pagination['artistsPaginated'],
-            'categories' => $pagination['categories'],
-            'nbPages' => $pagination['nbPages'],
-        ]);
-    }
-
-
-
-    /**
+     * @Route("/artist", name="artist_list", methods={"GET"})
      * @Route("/artist/category/{id}", name="artist_list_by_category", methods={"GET"}, requirements={"id"="\d+"})
      */
-    public function listByCategory($id, CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
+    public function list(ArtistRepository $artistRepository, CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request, $id=null): Response
     {
-        $pagination = $artistHandler->paginate($id, $categoryHandler, $request);
+        // max element per page
+        $limit = 9;
+
+        // getting page number
+        $page = (int)$request->query->get("page", 1);
+
+        if($request->get('id')){
+            $artists = $artistRepository->findByCategory($request->get('id'));
+
+            $artistsPaginated = $artistRepository->findPaginatedArtistsByCategory($request->get('id'), $page, $limit);
+            // dd($artistsPaginated);
+
+            $pagination = $artistHandler->paginate($artists, $categoryHandler, $request, $request->get('id'));
+        }
+        else{
+            $artists = $artistRepository->findAll();
+            
+            $artistsPaginated = $artistRepository->findPaginatedArtists($page, $limit);
+            // dd($artistsPaginated);
+        
+            $pagination = $artistHandler->paginate($artists, $categoryHandler, $request);
+        }
+
+        
 
         return $this->render('artist/list.html.twig', [
-            'artists' => $pagination['artistsPaginated'],
+            'artists' => $artistsPaginated,
             'categories' => $pagination['categories'],
             'nbPages' => $pagination['nbPages'],
         ]);
     }
-
 
 
     /**
@@ -55,11 +62,12 @@ class ArtistController extends AbstractController
         $artist = $artistRepository->findOneBy(['id'=>$id]);
         $artist->setColor($request->get("color"));
 
-        // dd($artist, $request->get("color"));
-
         return $this->render('artist/view.html.twig', [
             'artist' => $artist,
         ]);
     }
+
+
+    
     
 }
