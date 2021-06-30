@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\UserHandler;
 use App\Form\BilleterieFormType;
 use App\Repository\UserRepository;
+use App\Service\BilletterieHandler;
 use App\Repository\ArtistRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +43,7 @@ class BilleterieController extends AbstractController
     /**
      * @Route("/billeterie", name="billeterie_form")
      */
-    public function billeterie( UserInterface $user,  UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
+    public function billeterie(BilletterieHandler $billetterieHandler, UserInterface $user,  UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
     {
         // dd($this->getUser());
 
@@ -60,12 +61,7 @@ class BilleterieController extends AbstractController
         ];
 
         $artists = $artistRepository->findArtitsInConcert();
-        
-        // $artists_array = [];
-        // foreach($artists as $artist){
-        //     $artists_array[$artist->getName()] = $artist->getName();
-        // }
-        // dd($artists_array);
+    
 
         $form = $this->createForm(BilleterieFormType::class);
 
@@ -80,16 +76,6 @@ class BilleterieController extends AbstractController
                 $i++;
             }
         }
-
-        // ->add('Artiste', EntityType::class, [
-        //     'class' => Artist::class,
-        //     'label' => 'Artiste',
-        //     'multiple' => true,
-        //     'mapped' => false,
-        //     'required' => false,
-        //     'expanded' => true,
-        // ])
-
 
         $form->handleRequest($request);
 
@@ -111,20 +97,14 @@ class BilleterieController extends AbstractController
             
             // dd($dataForm, $dataFormFiltered);
 
-            // $mail->send()
+     
+            $mailBody = $this->renderView('email/reservation.html.twig', [
+                        'dataForm' => $dataFormFiltered,
+            ]);
+
+            $billetterieHandler->mailer('Festival Technonite Demande de Reservation', 'festival_reservation@festival.com', $mailBody, $user, $mailer);
 
 
-            $message = new \Swift_Message('Festival Technonite Demande de Reservation');
-            $message->setFrom($user->getEmail());
-            $message->setTo('festival_reservation@festival.com');
-            $message->setBody(
-                $this->renderView('email/reservation.html.twig', [
-                    'dataForm' => $dataFormFiltered,
-                ]),
-                'text/html'
-            );
-
-            $mailer->send($message);
 
             // $logger->info('email sent');
             $this->addFlash('reservation_sent', 'Votre demande de reservation a bien été envoyé aux organisateurs, vous receverez une confirmation prochainement.');

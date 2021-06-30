@@ -20,24 +20,12 @@ class ArtistController extends AbstractController
      */
     public function list(CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
     {
-        // max element per page
-        $limit = 9;
-
-        // getting page number
-        $page = (int)$request->query->get("page", 1);
-
-        // getting handlers from defined services
-        $categories = $categoryHandler->handle();
-        $artists = $artistHandler->handle();
-        $artistsPaginated = $artistHandler->handlePagination($limit, $page);
-        
-        // calculating number of total pages
-        $nbPages = ceil(count($artists) / $limit);
+        $pagination = $artistHandler->paginate($id=null, $categoryHandler, $request);
 
         return $this->render('artist/list.html.twig', [
-            'artists' => $artistsPaginated,
-            'categories' => $categories,
-            'nbPages' => $nbPages,
+            'artists' => $pagination['artistsPaginated'],
+            'categories' => $pagination['categories'],
+            'nbPages' => $pagination['nbPages'],
         ]);
     }
 
@@ -48,24 +36,12 @@ class ArtistController extends AbstractController
      */
     public function listByCategory($id, CategoryHandler $categoryHandler, ArtistHandler $artistHandler, Request $request): Response
     {
-        // max element per page
-        $limit = 9;
-
-        // getting page number
-        $page = (int)$request->query->get("page", 1);
-        
-        // getting handlers from defined services
-        $categories = $categoryHandler->handle();
-        $artists = $artistHandler->handleByCategory($id);
-        $artistsPaginated = $artistHandler->handlePaginationByCategory($id, $limit, $page);
-
-        // calculating number of total pages
-        $nbPages = ceil(count($artists) / $limit);
+        $pagination = $artistHandler->paginate($id, $categoryHandler, $request);
 
         return $this->render('artist/list.html.twig', [
-            'artists' => $artistsPaginated,
-            'categories' => $categories,
-            'nbPages' => $nbPages,
+            'artists' => $pagination['artistsPaginated'],
+            'categories' => $pagination['categories'],
+            'nbPages' => $pagination['nbPages'],
         ]);
     }
 
@@ -85,8 +61,5 @@ class ArtistController extends AbstractController
             'artist' => $artist,
         ]);
     }
-
-
-    
     
 }
