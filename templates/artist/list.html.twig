@@ -17,15 +17,15 @@
 <div class="row mt-5">
     {% for artist in artists %}
         <div class="col-4">
-            
-            <div class="card border-{{artist.color}} mb-5" style="max-width: 23rem; min-height: 15rem">
+            {# {{ dump(artist[0].color)}} #}
+            <div class="card border-{{artist[0].color}} mb-5" style="max-width: 23rem; min-height: 15rem">
             
                 
-                <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist.concert != NULL) ? 'secondary' : 'primary' }}">{{ (artist.concert != NULL) ? 'En concert' : 'Music de rue' }}</span></div>
+                <div class="card-header align-self-end"><span class="badge rounded-pill bg-{{ (artist[0].concert != NULL) ? 'secondary' : 'primary' }}">{{ (artist[0].concert != NULL) ? 'En concert' : 'Music de rue' }}</span></div>
                 <div class="card-body">
-                    <h4 class="card-title"> {{ artist.name }}</h4>
-                    <p class="card-text">{{ artist.description | u.truncate(100, '...') }} </p>
-                    <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id, 'color':artist.color}) }}">Decouvrir l'artiste</a></p>
+                    <h4 class="card-title"> {{ artist[0].name }}</h4>
+                    <p class="card-text">{{ artist[0].description | u.truncate(100, '...') }} </p>
+                    <p class="card-text"><a href="{{ path('artist_view', {'id':artist[0].id, 'color':artist[0].color}) }}">Decouvrir l'artiste</a></p>
                 </div>
             
             </div>
