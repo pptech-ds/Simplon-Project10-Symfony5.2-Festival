@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Artist;
-use App\Entity\Category;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -23,81 +21,19 @@ class ArtistRepository extends ServiceEntityRepository
 
 
     /**
-     * Recherche les artistes en fonction de la catégorie
-     * @return Artist[] Returns an array of Artist objects
-     */    
-    public function findByCategory(int $category = null)
-    {
-        $query = $this->createQueryBuilder('a'); // SELECT * FROM artist
-            // ->select('a.id', 'a.name' , 'a.isLive', 'a.description', 'a.concert'); 
-            if($category != null) {
-                $query->innerJoin('a.category', 'c');
-                $query->andWhere('c.id = :id')
-                    ->setParameter('id', $category);
-            } 
-        return $query->getQuery()->getResult();
-    }
-
-
-
-    /**
-     * Recherche les artistes en fonction de la catégorie
-     * @return Artist[] Returns an array of Artist objects
-     */    
-    public function findAllAndCount()
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT a.id, a.name, a.description, c.id AS categoryId, c.name AS categoryName, (SELECT COUNT(b.id) 
-            FROM App\Entity\Artist b) AS NbArtists 
-            FROM App\Entity\Artist a
-            INNER JOIN a.category c
-            WHERE a.category = c.id'
-        );
-
-        dd($query->getResult());
-
-        return $query->getResult();
-    }
-
-
-    /**
-     * Recherche les artistes en fonction de la catégorie
-     * @return Artist[] Returns an array of Artist objects
-     */    
-    public function findAllAndCountByCategory(int $category = null)
-    {
-        $entityManager = $this->getEntityManager();
-
-        $query = $entityManager->createQuery(
-            'SELECT a.id, a.name, a.description, c.id AS categoryId, c.name AS categoryName, 
-                (
-                    SELECT COUNT(b.id) 
-                    FROM App\Entity\Artist b
-                ) AS NbArtists 
-                FROM App\Entity\Artist a
-                INNER JOIN a.category c
-                WHERE a.category = c.id
-                AND c.id = 37'
-        );
-
-        dd($query->getResult());
-
-        return $query->getResult();
-    }
-
-
-    /**
      * Returns all Annonces per page
      * @return Artist[] Returns an array of Artist objects 
      */
     public function findPaginatedArtists($page, $limit)
     {
         $query = $this->createQueryBuilder('a')
+            ->select('a')
+            ->addSelect('(SELECT COUNT(b.id) 
+            FROM App\Entity\Artist b) AS NbArtists')
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit)
         ;
+
         return $query->getQuery()->getResult();
     }
 
@@ -108,19 +44,25 @@ class ArtistRepository extends ServiceEntityRepository
      */
     public function findPaginatedArtistsByCategory(int $category = null, $page, $limit)
     {
-        $query = $this->createQueryBuilder('a');
-        if($category != null) {
-            $query->innerJoin('a.category', 'c');
-            $query->andWhere('c.id = :id')
-                ->setParameter('id', $category);
-        } 
-        $query->setFirstResult(($page * $limit) - $limit)
+        $query = $this->createQueryBuilder('a')
+            ->select('a')
+            ->addSelect('(
+                SELECT COUNT(b.id) 
+                FROM App\Entity\Artist b
+                WHERE b.category = :id
+                ) AS NbArtists')
+            ->innerJoin('a.category', 'c')
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $category)
+            ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit)
-        ;
+            ;
+
+        // dd($query->getQuery()->getResult());
+        
         return $query->getQuery()->getResult();
     }
     
-
 
     /**
      * Returns all Annonces per page
@@ -134,56 +76,4 @@ class ArtistRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-
-    // /**
-    //  * Returns all Annonces per page
-    //  * @return void 
-    //  */
-    // public function findArtitsInConcert2()
-    // {
-    //     $query = $this->createQueryBuilder('a')
-    //         ->andWhere('a.concert IS NOT NULL')
-    //     ;
-    //     $artists = $query->getQuery()->getResult();
-
-    //     $artistNames = [];
-
-    //     foreach($artists as $artist){
-    //         $artistNames[$artist->getName()] = $artist->getName();
-    //     }
-
-    //     return $artistNames;
-    // }
-
-
-
-
-    // /**
-    //  * @return Artist[] Returns an array of Artist objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Artist
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
