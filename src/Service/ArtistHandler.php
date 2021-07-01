@@ -4,7 +4,7 @@ namespace App\Service;
 
 class ArtistHandler
 {
-    public function handle($artists)
+    public function setColor($artists)
     {
         $categoryColors = [
             'Mélodique' => 'primary',
