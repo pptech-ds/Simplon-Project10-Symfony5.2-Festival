@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -70,12 +71,18 @@ class BilleterieController extends AbstractController
             foreach($agenda['plages'] as $plage){
                 $form->add('nbTickets_'.str_replace(" ", "", $artists[$i]->getName()), IntegerType::class, [
                     'label' => $artists[$i]->getName().' - '.$date.' - '.$plage,
-                    'attr' => ['value' => '1', 'min' => '0'],
+                    'attr' => ($request->get('nbPlace') && ($request->get('artist')==$artists[$i]->getName())) ? ['value' => $request->get('nbPlace'), 'min' => '0'] : ['value' => '0', 'min' => '0'],
                     ]
                     );
                 $i++;
             }
         }
+
+        $form->add('Envoyer', SubmitType::class, [
+            'attr' => [
+                'class' => 'mb-3 mt-3 btn btn-lg btn-primary'
+            ],
+        ]);
 
         $form->handleRequest($request);
 

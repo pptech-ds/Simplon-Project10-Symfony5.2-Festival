@@ -38,7 +38,7 @@ class ArtistController extends AbstractController
             $this->artistRepository->findPaginatedArtists($page, $limit);
         // dd($artistsPaginated);
 
-        $artists = $artistHandler->handle($artistsPaginated);
+        $artists = $artistHandler->setColor($artistsPaginated);
 
         return $this->render('artist/list.html.twig', [
             'artists' => $artists,
