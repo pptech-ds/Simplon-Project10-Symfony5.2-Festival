@@ -31,9 +31,6 @@ class BilleterieController extends AbstractController
 
         $artists = $artistRepository->findArtitsInConcert();
 
-        // dd($artists);
-        // dd($table);
-
         return $this->render('billeterie/agenda.html.twig', [
             'agenda' => $agenda,
             'artists' => $artists,
@@ -46,10 +43,6 @@ class BilleterieController extends AbstractController
      */
     public function billeterie(BilletterieHandler $billetterieHandler, UserInterface $user,  UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
     {
-        // dd($this->getUser());
-
-        // dd($user->getEmail());
-
         if($this->getUser() == null){
             $this->addFlash('billeterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
             
@@ -62,7 +55,6 @@ class BilleterieController extends AbstractController
         ];
 
         $artists = $artistRepository->findArtitsInConcert();
-    
 
         $form = $this->createForm(BilleterieFormType::class);
 
@@ -86,15 +78,11 @@ class BilleterieController extends AbstractController
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $dataForm = $form->getData();
-
-            // dd($dataForm);
-
+            
             $dataFormFiltered = [];
-
             foreach($dataForm as $key => $value) {
                 if($value != '0'){
                     $dataFormFiltered[$key] = $value;
@@ -102,18 +90,12 @@ class BilleterieController extends AbstractController
                 
             }
             
-            // dd($dataForm, $dataFormFiltered);
-
-     
             $mailBody = $this->renderView('email/reservation.html.twig', [
                         'dataForm' => $dataFormFiltered,
             ]);
 
             $billetterieHandler->mailer('Festival Technonite Demande de Reservation', 'festival_reservation@festival.com', $mailBody, $user, $mailer);
 
-
-
-            // $logger->info('email sent');
             $this->addFlash('reservation_sent', 'Votre demande de reservation a bien été envoyé aux organisateurs, vous receverez une confirmation prochainement.');
             
             return $this->redirectToRoute('home');
