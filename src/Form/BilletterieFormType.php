@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-class BilleterieFormType extends AbstractType
+class BilletterieFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {       

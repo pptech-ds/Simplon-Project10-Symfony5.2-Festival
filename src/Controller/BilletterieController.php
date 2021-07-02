@@ -3,35 +3,40 @@
 namespace App\Controller;
 
 use App\Service\UserHandler;
-use App\Form\BilleterieFormType;
-use App\Repository\UserRepository;
+use App\Form\BilletterieFormType;
 use App\Service\BilletterieHandler;
 use App\Repository\ArtistRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class BilleterieController extends AbstractController
+class BilletterieController extends AbstractController
 {
+    private $artistRepository;
+
+    public function __construct(ArtistRepository $artistRepository)
+    {
+        $this->artistRepository = $artistRepository;
+    }
+
+
     /**
-     * @Route("/agenda", name="billeterie_agenda")
+     * @Route("/agenda", name="billetterie_agenda")
      */
-    public function agenda(ArtistRepository $artistRepository): Response
+    public function agenda(): Response
     {
         $agenda = [
             'dates' => ['20/08/2021', '21/08/2021', '22/08/2021'],
             'plages' => ['16h - 18h', '18h - 20h', '21h - 23h'],
         ];
 
-        $artists = $artistRepository->findArtitsInConcert();
+        $artists = $this->artistRepository->findArtitsInConcert();
 
-        return $this->render('billeterie/agenda.html.twig', [
+        return $this->render('billetterie/agenda.html.twig', [
             'agenda' => $agenda,
             'artists' => $artists,
         ]);
@@ -39,12 +44,12 @@ class BilleterieController extends AbstractController
 
 
     /**
-     * @Route("/billeterie", name="billeterie_form")
+     * @Route("/billetterie", name="billetterie_form")
      */
-    public function billeterie(BilletterieHandler $billetterieHandler, UserInterface $user,  UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
+    public function Billetterie(BilletterieHandler $billetterieHandler, UserInterface $user,  Request $request, \Swift_Mailer $mailer): Response
     {
         if($this->getUser() == null){
-            $this->addFlash('billeterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
+            $this->addFlash('billetterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
             
             return $this->redirectToRoute('home');
         }
@@ -54,9 +59,9 @@ class BilleterieController extends AbstractController
             'plages' => ['16h - 18h', '18h - 20h', '21h - 23h'],
         ];
 
-        $artists = $artistRepository->findArtitsInConcert();
+        $artists = $this->artistRepository->findArtitsInConcert();
 
-        $form = $this->createForm(BilleterieFormType::class);
+        $form = $this->createForm(BilletterieFormType::class);
 
         $i = 0;
         foreach($agenda['dates'] as $date){
@@ -102,8 +107,8 @@ class BilleterieController extends AbstractController
         }
         
 
-        return $this->render('billeterie/form.html.twig', [
-            'BilleterieForm' => $form->createView(),
+        return $this->render('billetterie/form.html.twig', [
+            'billetterieForm' => $form->createView(),
             'artists' => $artists,
         ]);
 

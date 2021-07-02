@@ -29,12 +29,12 @@ class FestivalController extends AbstractController
     // }
 
     // /**
-    //  * @Route("/billeterie", name="festival_billeterie")
+    //  * @Route("/Billetterie", name="festival_Billetterie")
     //  */
-    // public function billeterie(): Response
+    // public function Billetterie(): Response
     // {
-    //     return $this->render('festival/billeterie.html.twig', [
-    //         'controller_name' => 'FestivalController BILLETERIE PAGE',
+    //     return $this->render('festival/Billetterie.html.twig', [
+    //         'controller_name' => 'FestivalController Billetterie PAGE',
     //     ]);
     // }
 }

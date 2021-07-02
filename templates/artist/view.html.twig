@@ -16,7 +16,7 @@
 </div>
 <div class="d-grid gap-2 my-5">
     {% if app.request.get('agenda') %}
-      <a href="{{ path('billeterie_agenda') }}" type="button" class="btn btn-lg btn-primary">Retour à l'agenda des concerts</a>
+      <a href="{{ path('Billetterie_agenda') }}" type="button" class="btn btn-lg btn-primary">Retour à l'agenda des concerts</a>
     {% else %}
       <a href="{{ path('artist_list', {'page':1}) }}" type="button" class="btn btn-lg btn-primary">Retour à la liste des artistes</a>
     {% endif %}
