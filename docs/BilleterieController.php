@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Service\UserHandler;
-use App\Form\BilleterieFormType;
+use App\Form\BilletterieFormType;
 use App\Repository\UserRepository;
 use App\Repository\ArtistRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class BilleterieController extends AbstractController
+class BilletterieController extends AbstractController
 {
     /**
-     * @Route("/agenda", name="billeterie_agenda")
+     * @Route("/agenda", name="Billetterie_agenda")
      */
     public function agenda(ArtistRepository $artistRepository): Response
     {
@@ -30,7 +30,7 @@ class BilleterieController extends AbstractController
         // dd($artists);
         // dd($table);
 
-        return $this->render('billeterie/agenda.html.twig', [
+        return $this->render('Billetterie/agenda.html.twig', [
             'agenda' => $agenda,
             'artists' => $artists,
         ]);
@@ -38,14 +38,14 @@ class BilleterieController extends AbstractController
 
 
     /**
-     * @Route("/billeterie", name="billeterie_form")
+     * @Route("/Billetterie", name="Billetterie_form")
      */
-    public function billeterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
+    public function Billetterie(UserHandler $userHandler, Request $request, \Swift_Mailer $mailer, ArtistRepository $artistRepository): Response
     {
         // dd($this->getUser());
 
         if($this->getUser() == null){
-            $this->addFlash('billeterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
+            $this->addFlash('Billetterie_register', 'Vous devez vous enregistrer pour reserver un billet, merci de vous enregistrer ou de vous connecter !');
             
             return $this->redirectToRoute('home');
         }
@@ -58,7 +58,7 @@ class BilleterieController extends AbstractController
         }
         // dd($artists_array);
 
-        $form = $this->createForm(BilleterieFormType::class);
+        $form = $this->createForm(BilletterieFormType::class);
         $form->handleRequest($request);
 
         
@@ -68,7 +68,7 @@ class BilleterieController extends AbstractController
             // dd('OK');
 
             $dataForm = $form->getData();
-            // $BilleterieForm = $request->get('BilleterieForm');
+            // $BilletterieForm = $request->get('BilletterieForm');
             // $postData = $request->request->get('contact');
 
             // dd($dataForm, $form->get('email')->getData());
@@ -145,8 +145,8 @@ class BilleterieController extends AbstractController
             }
         }
 
-        return $this->render('billeterie/form.html.twig', [
-            'BilleterieForm' => $form->createView(),
+        return $this->render('Billetterie/form.html.twig', [
+            'BilletterieForm' => $form->createView(),
             'artists' => $artists,
         ]);
 

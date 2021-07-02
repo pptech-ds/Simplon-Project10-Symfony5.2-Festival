@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for flashArtistSelection in app.flashes('billeterie_artist_selection') %}
+        {% for flashArtistSelection in app.flashes('billetterie_artist_selection') %}
         <div class="alert alert-danger" role="alert">{{ flashArtistSelection }}</div>
         {% endfor %}
 
@@ -28,11 +28,8 @@
                     <td class="text-left">{{ date }}</td>
                     <td class="text-center">{{ plage }}</td>
 
-                    {# <p class="card-text"><a href="{{ path('artist_view', {'id':artist.id, 'color':artist.color}) }}">Decouvrir l'artiste</a></p> #}
                     <td class="text-center"><a href="{{ path('artist_view', {'id':artists[i].id, 'color':'secondary', 'agenda':true}) }}" class="text-decoration-none">{{ artists[i].name }}</a></td>
-                    {# <td class="text-center">{{ artists[i].name }}</td> #}
-                    {# <td class="text-center"><a href="{{path('billeterie_form', {'date':date, 'plage':plage, 'artist':artists[i].name })}}" type="button" class="btn btn-primary">Réserver une place</a></td> #}
-                    <td class="text-center"><a href="{{path('billeterie_form', {'nbPlace':1, 'artist':artists[i].name})}}" type="button" class="btn btn-primary">Réserver une place</a></td>
+                    <td class="text-center"><a href="{{path('billetterie_form', {'nbPlace':1, 'artist':artists[i].name})}}" type="button" class="btn btn-primary">Réserver une place</a></td>
                 </tr>
                 {% set i = i + 1  %}
             {% endfor %}
