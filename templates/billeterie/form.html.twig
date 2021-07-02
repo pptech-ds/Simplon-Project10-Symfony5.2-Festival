@@ -1,24 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reservez vos billets{% endblock %}
+{% block title %}Reservez vos billets !{% endblock %}
 
 {% block body %}
 
 
 
 <div class="input-group-addon">
-    {# {{ dump(app.request.get('date')) }} #}
-    {# {{ dump(app.request.get('plage')) }} #}
-    {# {{ dump(app.user) }} #}
-    {# {{ dump(app.user.email) }} #}
-    {# {{ form_start(BilleterieForm) }}
-        {{ form_row(BilleterieForm.lastname) }}
-        {{ form_row(BilleterieForm.firstname) }}
-        {{ form_row(BilleterieForm.phone) }}
-    {{ form_end(BilleterieForm) }} #}
-
-    {{ form(BilleterieForm) }}
-
+{{ form(BilleterieForm) }}
 </div>
 
 
